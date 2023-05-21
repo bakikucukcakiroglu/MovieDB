@@ -2,6 +2,7 @@ package com.moviedb.server.controller;
 
 import com.moviedb.server.payload.AddUserRequest;
 import com.moviedb.server.payload.LoginRequest;
+import com.moviedb.server.payload.UpdateDirectorPlatformRequest;
 import com.moviedb.server.service.AuthService;
 import com.moviedb.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,4 +38,37 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
+
+    @DeleteMapping ("/delete/{username}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String username) {
+
+        System.out.println("girdim " + username);
+
+        int user = userService.deleteUser(username);
+
+        if (user != 0) {
+            // Successful login
+            return ResponseEntity.ok(user);
+        } else {
+            // Invalid credentials
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+    @PutMapping ("/update-platform")
+    public ResponseEntity<Object> updateDirector(@RequestBody UpdateDirectorPlatformRequest updateDirectorPlatformRequest) {
+
+
+        int user = userService.updateDirector(updateDirectorPlatformRequest);
+
+        if (user != 0) {
+            // Successful login
+            return ResponseEntity.ok(user);
+        } else {
+            // Invalid credentials
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+
 }
