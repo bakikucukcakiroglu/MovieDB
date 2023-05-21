@@ -120,4 +120,19 @@ public class UserController {
     }
 
 
+    @PostMapping("/add-movie")
+    public ResponseEntity<Object> addMovie(@RequestBody AddMovieRequest addMovieRequest) {
+
+        int user = userService.addUser(addUserRequest);
+
+        if (user != 0) {
+            // Successful login
+            return ResponseEntity.ok(user);
+        } else {
+            // Invalid credentials
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+
 }

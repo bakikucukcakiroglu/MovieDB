@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button,
     Dialog,
@@ -17,15 +17,34 @@ import { getAllDirectors } from "../../queries/getAllDirectors.query";
 import { useQuery } from "react-query";
 
 const ListDirectorsModal = ({ listDirectorsModal, setListDirectorsModal, setAlert }) => {
-    const { data, isLoading, isError, error, refetch } = useQuery('directors', getAllDirectors, {refetchOnMount:false, refetchOnWindowFocus:false});
 
+    const [directors, setDirectors] = useState([]);
     const handleClose = () => {
         setListDirectorsModal(false);
     };
 
+
+    const  handleFetchDirectors = async () => {
+
+        try{
+
+            const response = await getAllDirectors();
+
+            setDirectors(response);
+
+
+        }catch(error){
+
+            console.log("Couldn't fetch directors.");
+
+        }
+
+    }
+
     useEffect(() => {
         if(listDirectorsModal){
-            refetch();
+
+            handleFetchDirectors();
         }
     }, [listDirectorsModal]);
 
@@ -34,11 +53,11 @@ const ListDirectorsModal = ({ listDirectorsModal, setListDirectorsModal, setAler
             <Dialog open={listDirectorsModal} onClose={handleClose}>
                 <DialogTitle>List of Directors</DialogTitle>
                 <DialogContent>
-                    {isLoading ? (
+{/*                    {isLoading ? (
                         <Box sx={{ display: 'flex' }}>
                             <CircularProgress />
                         </Box>
-                    ) : (
+                    ) : (*/}
                         <Table>
                             <TableHead>
                                 <TableRow>
@@ -50,7 +69,7 @@ const ListDirectorsModal = ({ listDirectorsModal, setListDirectorsModal, setAler
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {data?.map((director) => (
+                                {directors?.map((director) => (
                                     <TableRow key={director.username}>
                                         <TableCell>{director.username}</TableCell>
                                         <TableCell>{director.name_}</TableCell>
@@ -61,7 +80,8 @@ const ListDirectorsModal = ({ listDirectorsModal, setListDirectorsModal, setAler
                                 ))}
                             </TableBody>
                         </Table>
-                    )}
+               {/*     )
+                }*/}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Close</Button>

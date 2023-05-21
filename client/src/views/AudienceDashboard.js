@@ -10,12 +10,10 @@ import AddUserModal from "./modals/addUserModal";
 import DeleteAudienceModal from "./modals/deleteAudienceModal";
 import ListDirectorsModal from "./modals/ListDirectorsModal";
 import ListRatingsModal from "./modals/ListRatingsModal";
-import ListDirectorsMoviesModal from "./modals/ListDirectorsMoviesModal";
-import ListMovieRatingModal from "./modals/ListMovieRatingModal";
 
-const Home = () => {
+const AudienceDashboard = () => {
 
-    const [alert, setAlert] = useState({active:false, alertType: "", alertMessage:""})
+    const [alert, setAlert] = useState({active:false, alertType: "error", alertMessage:""})
 
     const [directorUpdateModal, setDirectorUpdateModal] = useState(false);
     const handleOpenDirectorUpdateModal = () => {
@@ -41,35 +39,22 @@ const Home = () => {
     };
 
     const [listRatingsModal, setListRatingsModal] = useState(false);
-    
     const handleListRatingsModalOpen = () => {
         setListRatingsModal(true);
-    };
-
-    const [listDirectorsMoviesModal, setListDirectorsMoviesModal] = useState(false);
-    
-    const handleListDirectorsMoviesModalOpen = () => {
-        setListDirectorsMoviesModal(true);
-    };
-
-    const [listMovieRatingModal, setListMovieRatingModal] = useState(false);
-    
-    const handleListMovieRatingModalOpen = () => {
-        setListMovieRatingModal(true);
     };
 
 
     const actionsOfManager = [
         {
-            label: "Add User",
-            description: "Add a new audience or director",
+            label: "List Available Theatres",
+            description: "List all of the theatres available for a given slot.",
             func: () => {
                 console.log("Add User Clicked!");
                 handleAddUserModalOpen();
             },
         },
         {
-            label: "Delete Audience",
+            label: "Add M",
             description: "Delete an existing audience",
             func: () => {
                 console.log("Delete Audience Clicked!");
@@ -105,25 +90,16 @@ const Home = () => {
             description: "View all movies of a specific director",
             func: () => {
                 console.log("Director's Movies Clicked!");
-                handleListDirectorsMoviesModalOpen();
             },
-        },
-        {
-            label: "Movie's Rating",
-            description: "View average rating of a specific movie",
-            func: () => {
-                console.log("Movie's Rating Clicked!");
-                handleListMovieRatingModalOpen();
-            },
-        },
+        }
     ];
 
     const handleCloseSnackbar = () => {
 
-        setAlert({active: false, alertType: "", alertMessage: ""});
+        setAlert({active: false, alertType: "error", alertMessage: ""});
     }
 
-    return ( 
+    return (
         <Grid container spacing={1}>
             <Snackbar open={alert.active} autoHideDuration={3000} onClose={handleCloseSnackbar}>
                 <Alert severity={alert.alertType}>{alert.alertMessage}</Alert>
@@ -133,14 +109,12 @@ const Home = () => {
             <DirectorUpdateModal directorUpdateModal={directorUpdateModal} setDirectorUpdateModal={setDirectorUpdateModal} setAlert={setAlert}></DirectorUpdateModal>
             <ListDirectorsModal listDirectorsModal={listDirectorsModal} setListDirectorsModal={setListDirectorsModal} setAlert={setAlert} ></ListDirectorsModal>
             <ListRatingsModal listRatingsModal={listRatingsModal} setListRatingsModal={setListRatingsModal} setAlert={setAlert}></ListRatingsModal>
-            <ListDirectorsMoviesModal listDirectorsMoviesModal={listDirectorsMoviesModal} setListDirectorsMoviesModal={setListDirectorsMoviesModal} setAlert={setAlert}></ListDirectorsMoviesModal>
-            <ListMovieRatingModal listMovieRatingModal={listMovieRatingModal} setListMovieRatingModal={setListMovieRatingModal} setAlert={setAlert}></ListMovieRatingModal>
             {actionsOfManager.map((action , index) =>
                 <Grid key={index} item xs={6} sm={4} md={3}>
                     <Card className="dashboard-card" onClick={action.func}>
                         <CardContent className="home-card-content">
                             <Typography variant="h6" className="card-item">{action.label}</Typography>
-                            <Typography style={{textAlign:"center"}} className="card-item">{action.description}</Typography>
+                            <Typography style={{textAlign:"center" , color :"gray"}} className="card-item">{action.description}</Typography>
                         </CardContent>
                     </Card>
                 </Grid>)
@@ -149,4 +123,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default  AudienceDashboard;

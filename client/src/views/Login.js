@@ -15,8 +15,10 @@ export default function Login (effect, deps) {
     useEffect(()=> {
 
         if(isLoggedIn){
-            console.log("Logged in: Redirecting to home.")
-            navigate('/home');
+
+            console.log("Logged in: Redirecting...")
+            navigate('/dashboard');
+
         }
     }, [isLoggedIn])
     const handleSubmit = async (e) => {

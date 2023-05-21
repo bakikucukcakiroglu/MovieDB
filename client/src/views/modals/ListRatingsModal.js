@@ -49,7 +49,6 @@ const ListRatingsModal = ({listRatingsModal, setListRatingsModal, setAlert}) => 
             console.error("Fetch ratings error:", error);
 
         }
-
     };
 
     return (
