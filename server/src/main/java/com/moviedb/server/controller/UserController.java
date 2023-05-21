@@ -1,5 +1,6 @@
 package com.moviedb.server.controller;
 
+import com.moviedb.server.payload.AddMovieRequest;
 import com.moviedb.server.payload.AddUserRequest;
 import com.moviedb.server.payload.LoginRequest;
 import com.moviedb.server.payload.UpdateDirectorPlatformRequest;
@@ -123,7 +124,9 @@ public class UserController {
     @PostMapping("/add-movie")
     public ResponseEntity<Object> addMovie(@RequestBody AddMovieRequest addMovieRequest) {
 
-        int user = userService.addUser(addUserRequest);
+
+
+        int user = userService.addMovie(addMovieRequest);
 
         if (user != 0) {
             // Successful login

@@ -1,5 +1,6 @@
 package com.moviedb.server.service;
 
+import com.moviedb.server.payload.AddMovieRequest;
 import com.moviedb.server.payload.AddUserRequest;
 import com.moviedb.server.payload.UpdateDirectorPlatformRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -77,5 +78,15 @@ public class UserService {
         String sql = "SELECT M.average_rating  FROM  Movies M WHERE M.movie_id = ?";
         return jdbcTemplate.queryForMap(sql, movieID);
     }
+
+
+    public int addMovie(AddMovieRequest addMovieRequest) {
+
+        String sql = " INSERT INTO Movies(movie_id, movie_name, duration, director_username, average_rating) VALUES ( ? , ? , ? , ? ,?)";
+        return jdbcTemplate.update(sql, addMovieRequest.getMovie_id(), addMovieRequest.getMovie_name(), addMovieRequest.getDuration(), addMovieRequest.getDirector_username(), addMovieRequest.getAverage_rating());
+
+
+    }
+
 
 }

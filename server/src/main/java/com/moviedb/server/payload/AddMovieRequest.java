@@ -9,18 +9,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class AddMovieRequest {
 
-    String user_type;
+    String movie_id, movie_name, director_username;
+    double average_rating;
+    int  duration;
 
-    String username;
 
-    String password_;
 
-    String name_;
-
-    String surname;
-
-    String nationality;
-
-    String platform_id;
 
 }

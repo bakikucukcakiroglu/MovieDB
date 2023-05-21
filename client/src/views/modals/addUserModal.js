@@ -57,12 +57,12 @@ const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
         }
 
         try {
-            const data = await addUser(user);
+            const data =  addUser(user);
             console.log("User data", data);
             setAlert({active: true, alertType: "success", alertMessage: `${userType} ${username} is saved successfully!`});
 
-        } catch (error) {
-            console.error("Create user error:", error);
+        } catch (Error) {
+            console.error("Create user error:", Error);
             setAlert({active: true, alertType: "error", alertMessage: `${userType} ${username} couldn't be saved!`})
         }
 
