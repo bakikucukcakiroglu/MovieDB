@@ -84,7 +84,7 @@ public class UserController {
     }
 
     @GetMapping("/ratings/{username}")
-    public ResponseEntity<Object> getAllDirectors(@PathVariable String username) {
+    public ResponseEntity<Object> getAllRatingsOfAudience(@PathVariable String username) {
 
         List<Map<String, Object>> ratings = userService.getAllRatingsOfAudience(username);
 
@@ -92,6 +92,30 @@ public class UserController {
             return ResponseEntity.ok(ratings);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No directors found");
+        }
+    }
+
+    @GetMapping("/average-rating/{movieID}")
+    public ResponseEntity<Object> getAverageRatingOfMovie(@PathVariable String movieID) {
+
+        Map<String, Object> rating = userService.getAverageRatingOfMovie(movieID);
+
+        if (rating != null) {
+            return ResponseEntity.ok(rating);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Average Rating could not be fetched");
+        }
+    }
+
+    @GetMapping("/directors-movies/{directorUsername}")
+    public ResponseEntity<Object> getDirectorsMovies(@PathVariable String directorUsername) {
+
+        List<Map<String, Object>> movies = userService.getDirectorsMovies(directorUsername);
+
+        if (!movies.isEmpty()) {
+            return ResponseEntity.ok(movies);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Director's Movies could not be fetched");
         }
     }
 

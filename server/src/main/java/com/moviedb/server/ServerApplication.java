@@ -71,11 +71,11 @@ public class ServerApplication {
         };
 
 
-        jdbcTemplate.batchUpdate(dropTables);
+       // jdbcTemplate.batchUpdate(dropTables);
 
-        jdbcTemplate.batchUpdate(createTables);
+      //  jdbcTemplate.batchUpdate(createTables);
 
-        jdbcTemplate.batchUpdate(addData);
+       // jdbcTemplate.batchUpdate(addData);
 
     }
 }

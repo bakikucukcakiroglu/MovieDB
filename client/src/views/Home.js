@@ -10,6 +10,8 @@ import AddUserModal from "./modals/addUserModal";
 import DeleteAudienceModal from "./modals/deleteAudienceModal";
 import ListDirectorsModal from "./modals/ListDirectorsModal";
 import ListRatingsModal from "./modals/ListRatingsModal";
+import ListDirectorsMoviesModal from "./modals/ListDirectorsMoviesModal";
+import ListMovieRatingModal from "./modals/ListMovieRatingModal";
 
 const Home = () => {
 
@@ -39,8 +41,21 @@ const Home = () => {
     };
 
     const [listRatingsModal, setListRatingsModal] = useState(false);
+    
     const handleListRatingsModalOpen = () => {
         setListRatingsModal(true);
+    };
+
+    const [listDirectorsMoviesModal, setListDirectorsMoviesModal] = useState(false);
+    
+    const handleListDirectorsMoviesModalOpen = () => {
+        setListDirectorsMoviesModal(true);
+    };
+
+    const [listMovieRatingModal, setListMovieRatingModal] = useState(false);
+    
+    const handleListMovieRatingModalOpen = () => {
+        setListMovieRatingModal(true);
     };
 
 
@@ -90,6 +105,7 @@ const Home = () => {
             description: "View all movies of a specific director",
             func: () => {
                 console.log("Director's Movies Clicked!");
+                handleListDirectorsMoviesModalOpen();
             },
         },
         {
@@ -97,6 +113,7 @@ const Home = () => {
             description: "View average rating of a specific movie",
             func: () => {
                 console.log("Movie's Rating Clicked!");
+                handleListMovieRatingModalOpen();
             },
         },
     ];
@@ -106,7 +123,7 @@ const Home = () => {
         setAlert({active: false, alertType: "", alertMessage: ""});
     }
 
-    return (
+    return ( 
         <Grid container spacing={1}>
             <Snackbar open={alert.active} autoHideDuration={3000} onClose={handleCloseSnackbar}>
                 <Alert severity={alert.alertType}>{alert.alertMessage}</Alert>
@@ -116,6 +133,8 @@ const Home = () => {
             <DirectorUpdateModal directorUpdateModal={directorUpdateModal} setDirectorUpdateModal={setDirectorUpdateModal} setAlert={setAlert}></DirectorUpdateModal>
             <ListDirectorsModal listDirectorsModal={listDirectorsModal} setListDirectorsModal={setListDirectorsModal} setAlert={setAlert} ></ListDirectorsModal>
             <ListRatingsModal listRatingsModal={listRatingsModal} setListRatingsModal={setListRatingsModal} setAlert={setAlert}></ListRatingsModal>
+            <ListDirectorsMoviesModal listDirectorsMoviesModal={listDirectorsMoviesModal} setListDirectorsMoviesModal={setListDirectorsMoviesModal} setAlert={setAlert}></ListDirectorsMoviesModal>
+            <ListMovieRatingModal listMovieRatingModal={listMovieRatingModal} setListMovieRatingModal={setListMovieRatingModal} setAlert={setAlert}></ListMovieRatingModal>
             {actionsOfManager.map((action , index) =>
                 <Grid key={index} item xs={6} sm={4} md={3}>
                     <Card className="dashboard-card" onClick={action.func}>
