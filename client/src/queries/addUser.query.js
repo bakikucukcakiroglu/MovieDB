@@ -1,10 +1,7 @@
-import { useState } from 'react';
-import { useQuery } from 'react-query'
-import { useMutation } from 'react-query';
 import {API_URL} from "../config";
 
-export const useAddUser = () => {
-    const addUser = useMutation((user) =>
+export const addUser = (user) => {
+
         fetch(`${API_URL}/api/user/add`, {
             method: 'POST',
             headers: {
@@ -18,7 +15,4 @@ export const useAddUser = () => {
                 throw new Error("Couldn't create user.");
             }
         })
-    );
-
-    return addUser;
 };

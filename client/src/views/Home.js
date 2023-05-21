@@ -8,6 +8,8 @@ import './Home.css';
 import DirectorUpdateModal from "./modals/updateDirectorModal";
 import AddUserModal from "./modals/addUserModal";
 import DeleteAudienceModal from "./modals/deleteAudienceModal";
+import ListDirectorsModal from "./modals/ListDirectorsModal";
+import ListRatingsModal from "./modals/ListRatingsModal";
 
 const Home = () => {
 
@@ -29,6 +31,18 @@ const Home = () => {
     const handleDeleteAudienceModalOpen = () => {
         setDeleteAudienceModal(true);
     };
+
+    const [listDirectorsModal, setListDirectorsModal] = useState(false);
+
+    const handleListDirectorsModalOpen = () => {
+        setListDirectorsModal(true);
+    };
+
+    const [listRatingsModal, setListRatingsModal] = useState(false);
+    const handleListRatingsModalOpen = () => {
+        setListRatingsModal(true);
+    };
+
 
     const actionsOfManager = [
         {
@@ -60,6 +74,7 @@ const Home = () => {
             description: "View all directors",
             func: () => {
                 console.log("List Directors Clicked!");
+                handleListDirectorsModalOpen();
             },
         },
         {
@@ -67,6 +82,7 @@ const Home = () => {
             description: "View all ratings of a specific audience",
             func: () => {
                 console.log("Audience's Ratings Clicked!");
+                handleListRatingsModalOpen();
             },
         },
         {
@@ -98,6 +114,8 @@ const Home = () => {
             <AddUserModal addUserModal={addUserModal} setAddUserModal={setAddUserModal} setAlert={setAlert}></AddUserModal>
             <DeleteAudienceModal deleteAudienceModal={deleteAudienceModal} setDeleteAudienceModal={setDeleteAudienceModal} setAlert={setAlert}></DeleteAudienceModal>
             <DirectorUpdateModal directorUpdateModal={directorUpdateModal} setDirectorUpdateModal={setDirectorUpdateModal} setAlert={setAlert}></DirectorUpdateModal>
+            <ListDirectorsModal listDirectorsModal={listDirectorsModal} setListDirectorsModal={setListDirectorsModal} setAlert={setAlert} ></ListDirectorsModal>
+            <ListRatingsModal listRatingsModal={listRatingsModal} setListRatingsModal={setListRatingsModal} setAlert={setAlert}></ListRatingsModal>
             {actionsOfManager.map((action , index) =>
                 <Grid key={index} item xs={6} sm={4} md={3}>
                     <Card className="dashboard-card" onClick={action.func}>

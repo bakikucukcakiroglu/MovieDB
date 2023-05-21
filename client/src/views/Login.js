@@ -1,24 +1,20 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { Container, Typography, TextField, Button } from '@mui/material';
-import {useLogin} from "../queries/login.query";
 import {AuthContext} from "../helpers/AuthProvider";
 import {useNavigate} from "react-router-dom";
+import {login} from "../queries/login.query";
 
 export default function Login (effect, deps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [loginStatus, setLoginStatus]= useState("");
-    const login = useLogin();
     const { isLoggedIn, Login } = useContext(AuthContext);
-
 
     const navigate =useNavigate();
 
     useEffect(()=> {
 
         if(isLoggedIn){
-
             console.log("Logged in: Redirecting to home.")
             navigate('/home');
         }
@@ -32,7 +28,7 @@ export default function Login (effect, deps) {
         };
 
         try {
-            const data = await login.mutateAsync(credentials);
+            const data = await login(credentials);
 
             console.log("data", data);
             Login(data);

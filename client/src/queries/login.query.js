@@ -1,11 +1,6 @@
-import { useState } from 'react';
-import { useQuery } from 'react-query'
-import { useMutation } from 'react-query';
-import { useQueryClient } from 'react-query';
 import {API_URL} from "../config";
 
-export const useLogin = () => {
-    const login = useMutation((credentials) =>
+export const login = (credentials) =>
         fetch(`${API_URL}/api/auth/login`, {
             method: 'POST',
             headers: {
@@ -18,8 +13,7 @@ export const useLogin = () => {
             } else {
                 throw new Error('Invalid credentials');
             }
-        })
-    );
+        }
+);
 
-    return login;
-};
+

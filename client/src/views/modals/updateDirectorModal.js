@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
-import { Grid, Card, CardContent, Typography, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import {updateDirectorPlatform} from "../../queries/updateDirector.query";
-import {useMutation} from "react-query";
 
 const DirectorUpdateModal = ({directorUpdateModal, setDirectorUpdateModal, setAlert}) => {
 
-
     const [username, setUsername] = useState('');
     const [platformId, setPlatformId] = useState('');
-
-
 
     const handleClose = () => {
         setDirectorUpdateModal(false);
         setUsername('');
         setPlatformId('');
     };
-
-    const mutation = useMutation(updateDirectorPlatform);
 
     const handleUpdate = async() => {
         // Perform the update action using the username and platformId values
@@ -30,7 +24,7 @@ const DirectorUpdateModal = ({directorUpdateModal, setDirectorUpdateModal, setAl
             platform_id: platformId,
         }
         try {
-            await mutation.mutateAsync(payload);
+            await updateDirectorPlatform(payload);
             // Handle successful update
             setAlert({active: true, alertType: "success", alertMessage: `Platform of ${username} is updated successfully!`});
 
@@ -39,7 +33,6 @@ const DirectorUpdateModal = ({directorUpdateModal, setDirectorUpdateModal, setAl
 
             setAlert({active: true, alertType: "error", alertMessage: `Platform of ${username} couldn't be updated!`});
 
-            // Handle error
         }
 
         // Reset the form and close the modal
@@ -50,8 +43,6 @@ const DirectorUpdateModal = ({directorUpdateModal, setDirectorUpdateModal, setAl
 
     return (
         <div>
-
-
             <Dialog open={directorUpdateModal} onClose={handleClose}>
                 <DialogTitle>Update Director</DialogTitle>
                 <DialogContent>

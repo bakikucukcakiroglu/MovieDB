@@ -5,6 +5,9 @@ import com.moviedb.server.payload.UpdateDirectorPlatformRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class UserService {
 
@@ -42,5 +45,21 @@ public class UserService {
 
         String sql = "UPDATE Directors SET platform_id = ? WHERE username = ?";
         return jdbcTemplate.update(sql, updateDirectorPlatformRequest.getPlatform_id(), updateDirectorPlatformRequest.getUsername());
+    }
+
+    public List getAllDirectors() {
+
+        System.out.println("getAllDirectories");
+
+        String sql = "SELECT * FROM Directors";
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    public List getAllRatingsOfAudience(String username) {
+
+        System.out.println("getAllRatings:: "+ username);
+
+        String sql = "SELECT M.movie_name, R.movie_id, R.rating FROM  Movies M INNER JOIN Rates R  ON M.movie_id = R.movie_id AND R.username = ?";
+        return jdbcTemplate.queryForList(sql, username);
     }
 }

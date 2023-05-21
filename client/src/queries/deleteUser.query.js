@@ -1,7 +1,3 @@
-
-
-import { useQuery } from 'react-query'
-import { useMutation } from 'react-query';
 import {API_URL} from "../config";
 export const deleteUser = async (username) => {
     // Perform the delete request to your API

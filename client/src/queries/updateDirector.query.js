@@ -1,7 +1,6 @@
-import { useMutation } from 'react-query';
 import { API_URL } from '../config';
 
-const updateDirectorPlatform = async (payload) => {
+export const updateDirectorPlatform = async (payload) => {
     const response = await fetch(`${API_URL}/api/user/update-platform`, {
         method: 'PUT',
         headers: {
@@ -18,4 +17,3 @@ const updateDirectorPlatform = async (payload) => {
 };
 
 
-export {updateDirectorPlatform};

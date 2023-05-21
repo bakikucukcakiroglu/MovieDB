@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -67,6 +68,30 @@ public class UserController {
         } else {
             // Invalid credentials
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+    @GetMapping("/directors")
+    public ResponseEntity<Object> getAllDirectors() {
+
+        List<Map<String, Object>> directors = userService.getAllDirectors();
+
+        if (!directors.isEmpty()) {
+            return ResponseEntity.ok(directors);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No directors found");
+        }
+    }
+
+    @GetMapping("/ratings/{username}")
+    public ResponseEntity<Object> getAllDirectors(@PathVariable String username) {
+
+        List<Map<String, Object>> ratings = userService.getAllRatingsOfAudience(username);
+
+        if (!ratings.isEmpty()) {
+            return ResponseEntity.ok(ratings);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No directors found");
         }
     }
 
