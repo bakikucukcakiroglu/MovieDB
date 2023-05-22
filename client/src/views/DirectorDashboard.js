@@ -5,44 +5,17 @@ import {
     Alert, Snackbar,
 } from '@mui/material';
 import './Home.css';
-import DirectorUpdateModal from "./modals/updateDirectorModal";
-import AddUserModal from "./modals/addUserModal";
-import DeleteAudienceModal from "./modals/deleteAudienceModal";
-import ListDirectorsModal from "./modals/ListDirectorsModal";
-import ListRatingsModal from "./modals/ListRatingsModal";
 import AddMovieModal from "./modals/AddMovieModal";
+import AddSessionModal from "./modals/AddSessionModal";
+import AddPredecessorModal from "./modals/AddPredecessorModal";
+import ListDirectorsSessionsModal from './modals/ListDirectorsSessionsModal';
+import UpdateMovieModal from './modals/updateMovieModal';
+import ListAudienceModal from './modals/ListAudienceModal';
+
 
 const DirectorDashboard= () => {
 
     const [alert, setAlert] = useState({active:false, alertType: "error", alertMessage:""})
-
-    const [directorUpdateModal, setDirectorUpdateModal] = useState(false);
-    const handleOpenDirectorUpdateModal = () => {
-        setDirectorUpdateModal(true);
-    };
-
-    const [addUserModal, setAddUserModal] = useState(false);
-
-    const handleAddUserModalOpen = () => {
-        setAddUserModal(true);
-    };
-
-    const [deleteAudienceModal, setDeleteAudienceModal] = useState(false);
-
-    const handleDeleteAudienceModalOpen = () => {
-        setDeleteAudienceModal(true);
-    };
-
-    const [listDirectorsModal, setListDirectorsModal] = useState(false);
-
-    const handleListDirectorsModalOpen = () => {
-        setListDirectorsModal(true);
-    };
-
-    const [listRatingsModal, setListRatingsModal] = useState(false);
-    const handleListRatingsModalOpen = () => {
-        setListRatingsModal(true);
-    };
 
 
     const [addMovieModal, setAddMovieModal] = useState(false);
@@ -52,6 +25,40 @@ const DirectorDashboard= () => {
         setAddMovieModal(true);
     }
 
+    const [addSessionModal, setAddSessionModal] = useState(false);
+
+    const handleAddSessionModalOpen = () => {
+
+        setAddSessionModal(true);
+    }
+
+    const [addPredecessorModal, setAddPredecessorModal] = useState(false);
+
+    const handleAddPredecessorModalOpen = () => {
+
+        setAddPredecessorModal(true);
+    }
+
+    const [listDirectorsSessionsModal, setListDirectorsSessionsModal] = useState(false);
+
+    const handleListDirectorsSessionsModalOpen = () => {
+
+        setListDirectorsSessionsModal(true);
+    }
+
+    const [updateMovieModal, setUpdateMovieModal] = useState(false);
+
+    const handleOpenUpdateMovieModal = () => {
+        setUpdateMovieModal(true);
+    };
+
+    const [getAllAudienceModal, setGetAllAudienceModal] = useState(false);
+
+    const handleOpenGetAudienceModal = () => {
+        setGetAllAudienceModal(true);
+    };
+
+
 
     const actionsOfManager = [
         {
@@ -59,7 +66,6 @@ const DirectorDashboard= () => {
             description: "List all theatres available for a given slot.",
             func: () => {
                 console.log("Add User Clicked!");
-                handleAddUserModalOpen();
             },
         },
         {
@@ -75,7 +81,7 @@ const DirectorDashboard= () => {
             description: 'Add a new movie session for a movie directed by me.',
             func: () => {
                 console.log("Delete Audience Clicked!");
-                handleDeleteAudienceModalOpen();
+                handleAddSessionModalOpen();
             },
         },
         {
@@ -83,7 +89,7 @@ const DirectorDashboard= () => {
             description: "Add predecessor(s) to a movie",
             func: () => {
                 console.log("Update Director Clicked!");
-                handleOpenDirectorUpdateModal();
+                handleAddPredecessorModalOpen();
             },
         },
         {
@@ -91,7 +97,7 @@ const DirectorDashboard= () => {
             description: "View all movies directed by me.",
             func: () => {
                 console.log("List Directors Clicked!");
-                handleListDirectorsModalOpen();
+                handleListDirectorsSessionsModalOpen();
             },
         },
         {
@@ -99,21 +105,22 @@ const DirectorDashboard= () => {
             description: "View all audiences who bought a ticket for a specific movie directed by me",
             func: () => {
                 console.log("Audience's Ratings Clicked!");
-                handleListRatingsModalOpen();
+                handleOpenGetAudienceModal();
             },
         },
         {
             label: "Update My Movie",
             description: "Update the name of a movie directed by me",
             func: () => {
-                console.log("Director's Movies Clicked!");
+                console.log("Director's Movies Clicked!"); 
+                handleOpenUpdateMovieModal();
             },
         },
     ];
 
     const handleCloseSnackbar = () => {
 
-        setAlert({active: false, alertType: "error", alertMessage: ""});
+        setAlert({...alert, active: false });
     }
 
     return (
@@ -122,6 +129,11 @@ const DirectorDashboard= () => {
                 <Alert severity={alert.alertType}>{alert.alertMessage}</Alert>
             </Snackbar>
             <AddMovieModal addMovieModal={addMovieModal} setAddMovieModal={setAddMovieModal} setAlert={setAlert} ></AddMovieModal>
+            <AddSessionModal addMovieSessionModal={addSessionModal} setAddMovieSessionModal={setAddSessionModal} setAlert={setAlert} ></AddSessionModal>
+            <AddPredecessorModal addPredecessorModal={addPredecessorModal} setAddPredecessorModal={setAddPredecessorModal} setAlert={setAlert} ></AddPredecessorModal>
+            <ListDirectorsSessionsModal listDirectorsSessionsModal={listDirectorsSessionsModal} setListDirectorsSessionsModal={setListDirectorsSessionsModal} setAlert={setAlert} ></ListDirectorsSessionsModal>
+            <ListAudienceModal listAudienceModal={getAllAudienceModal} setListAudienceModal={setGetAllAudienceModal} setAlert={setAlert} ></ListAudienceModal>
+            <UpdateMovieModal updateMovieModal={updateMovieModal} setUpdateMovieModal={setUpdateMovieModal} setAlert={setAlert} ></UpdateMovieModal>
             {actionsOfManager.map((action , index) =>
                 <Grid key={index} item xs={6} sm={4} md={3}>
                     <Card className="dashboard-card" onClick={action.func}>

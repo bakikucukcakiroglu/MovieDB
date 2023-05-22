@@ -69,34 +69,12 @@ const AudienceDashboard = () => {
                 handleOpenDirectorUpdateModal();
             },
         },
-        {
-            label: "List Directors",
-            description: "View all directors",
-            func: () => {
-                console.log("List Directors Clicked!");
-                handleListDirectorsModalOpen();
-            },
-        },
-        {
-            label: "Audience's Ratings",
-            description: "View all ratings of a specific audience",
-            func: () => {
-                console.log("Audience's Ratings Clicked!");
-                handleListRatingsModalOpen();
-            },
-        },
-        {
-            label: "Director's Movies",
-            description: "View all movies of a specific director",
-            func: () => {
-                console.log("Director's Movies Clicked!");
-            },
-        }
+       
     ];
 
     const handleCloseSnackbar = () => {
 
-        setAlert({active: false, alertType: "error", alertMessage: ""});
+        setAlert({...alert, active: false });
     }
 
     return (

@@ -127,7 +127,7 @@ const ManagerDashboard = () => {
 
     const handleCloseSnackbar = () => {
 
-        setAlert({active: false, alertType: "error", alertMessage: ""});
+        setAlert({...alert, active: false });
     }
 
     return (

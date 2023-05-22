@@ -48,14 +48,14 @@ const AddMovieModal = ({ addMovieModal, setAddMovieModal, setAlert }) => {
         };
 
         try {
-            const data =  addMovie(movie);
+            const data =  await addMovie(movie);
             console.log("Movie data", data);
             setAlert({
                 active: true,
                 alertType: "success",
                 alertMessage: `Movie with ID ${movieId} is saved successfully!`
             });
-        } catch (Error) {
+        } catch (error) {
             console.error("Create movie error:", Error);
             setAlert({
                 active: true,

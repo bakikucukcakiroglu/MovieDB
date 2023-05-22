@@ -1,9 +1,6 @@
 package com.moviedb.server.controller;
 
-import com.moviedb.server.payload.AddMovieRequest;
-import com.moviedb.server.payload.AddUserRequest;
-import com.moviedb.server.payload.LoginRequest;
-import com.moviedb.server.payload.UpdateDirectorPlatformRequest;
+import com.moviedb.server.payload.*;
 import com.moviedb.server.service.AuthService;
 import com.moviedb.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +131,77 @@ public class UserController {
         } else {
             // Invalid credentials
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+    @PostMapping("/add-session")
+    public ResponseEntity<Object> addSession(@RequestBody AddSessionRequest addSessionRequest) {
+
+
+
+        int user = userService.addSession(addSessionRequest);
+
+        if (user != 0) {
+            // Successful login
+            return ResponseEntity.ok(user);
+        } else {
+            // Invalid credentials
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+    @PostMapping("/add-predecessor")
+    public ResponseEntity<Object> addPredecessor(@RequestBody AddPredecessorRequest addPredecessorRequest) {
+
+
+
+        int user = userService.addPredecessor(addPredecessorRequest);
+
+        if (user != 0) {
+            // Successful login
+            return ResponseEntity.ok(user);
+        } else {
+            // Invalid credentials
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+    @GetMapping("/directors-sessions/{directorUsername}")
+    public ResponseEntity<Object> getDirectorsSessions(@PathVariable String directorUsername) {
+
+        List<Map<String, Object>> movies = userService.getDirectorsSessions(directorUsername);
+
+        if (!movies.isEmpty()) {
+            return ResponseEntity.ok(movies);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Director's Movies could not be fetched");
+        }
+    }
+
+    @PutMapping ("/update-movie")
+    public ResponseEntity<Object> updateMovie(@RequestBody UpdateMovieRequest updateMovieRequest) {
+
+
+        int user = userService.updateMovie(updateMovieRequest);
+
+        if (user != 0) {
+            // Successful login
+            return ResponseEntity.ok(user);
+        } else {
+            // Invalid credentials
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+    @PostMapping("/audience")
+    public ResponseEntity<Object> getAllAudience(@RequestBody GetAudienceRequest getAudienceRequest) {
+
+        List<Map<String, Object>> audience = userService.getAllAudience(getAudienceRequest);
+
+        if (!audience.isEmpty()) {
+            return ResponseEntity.ok(audience);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No audience found");
         }
     }
 
