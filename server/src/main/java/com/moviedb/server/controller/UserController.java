@@ -205,5 +205,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/sessions")
+    public ResponseEntity<Object> getAllSessions() {
+
+        List<Map<String, Object>> sessions = userService.getAllSessions();
+
+        if (!sessions.isEmpty()) {
+            return ResponseEntity.ok(sessions);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No sessions found");
+        }
+    }
+
 
 }
