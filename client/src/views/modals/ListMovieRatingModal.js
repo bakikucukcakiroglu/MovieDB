@@ -5,24 +5,15 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
     TextField,
     Typography,
 } from '@mui/material';
 
 import {getAverageRating} from "../../queries/getAverageRating.query";
-import {getAllDirectorsMovies} from "../../queries/getAllDirectorsMovies.query";
-
 
 const ListMovieRatingModal = ({listMovieRatingModal, setListMovieRatingModal, setAlert}) => {
     const [movie, setMovie] = useState('');
     const [response, setResponse] = useState([]);
-
-
 
     const handleClose = () => {
         setListMovieRatingModal(false);

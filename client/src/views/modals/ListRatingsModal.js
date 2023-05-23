@@ -14,9 +14,6 @@ import {
 } from '@mui/material';
 
 import {getRatingsOfAudienceByUsername} from "../../queries/getRatingsOfAudience.query";
-import {useQuery} from "react-query";
-import {getAllDirectors} from "../../queries/getAllDirectors.query";
-import {updateDirectorPlatform} from "../../queries/updateDirector.query";
 
 const ListRatingsModal = ({listRatingsModal, setListRatingsModal, setAlert}) => {
     const [username, setUsername] = useState('');

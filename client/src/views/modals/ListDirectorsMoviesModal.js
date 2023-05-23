@@ -14,16 +14,10 @@ import {
 } from '@mui/material';
 
 import {getAllDirectorsMovies} from "../../queries/getAllDirectorsMovies.query";
-import {getRatingsOfAudienceByUsername} from "../../queries/getRatingsOfAudience.query";
-
 
 const ListDirectorsMoviesModal = ({listDirectorsMoviesModal, setListDirectorsMoviesModal, setAlert}) => {
     const [username, setUsername] = useState('');
     const [response, setResponse] = useState([]);
-
-
-
-
 
     const handleClose = () => {
         setListDirectorsMoviesModal(false);
@@ -50,10 +44,7 @@ const ListDirectorsMoviesModal = ({listDirectorsMoviesModal, setListDirectorsMov
             console.error("Fetch ratings error:", error);
 
             setAlert({active: true, alertType: "error", alertMessage: error.message});
-
         }
-
-
     };
 
     return (
@@ -99,5 +90,4 @@ const ListDirectorsMoviesModal = ({listDirectorsMoviesModal, setListDirectorsMov
         </div>
     );
 };
-
 export default ListDirectorsMoviesModal;
