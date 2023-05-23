@@ -5,9 +5,8 @@ import {
     Alert, Snackbar,
 } from '@mui/material';
 import './Home.css';
-import DirectorUpdateModal from "./modals/updateDirectorModal";
-import AddUserModal from "./modals/addUserModal";
-import DeleteAudienceModal from "./modals/deleteAudienceModal";
+import DirectorUpdateModal from "./modals/UpdateDirectorModal";
+import DeleteAudienceModal from "./modals/DeleteAudienceModal";
 import ListSessionsModal from './modals/ListSessionsModal';
 
 

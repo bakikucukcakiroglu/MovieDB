@@ -33,7 +33,7 @@ const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
         setPlatformId("");
     };
 
-    const handleAddUserSubmit  = async (e) => {
+    const handleAddUserSubmit  = async () => {
         // Handle form submission logic here
         console.log("Add User Form Submitted!");
         console.log("User Type:", userType);

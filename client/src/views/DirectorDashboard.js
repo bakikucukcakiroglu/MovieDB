@@ -9,7 +9,7 @@ import AddMovieModal from "./modals/AddMovieModal";
 import AddSessionModal from "./modals/AddSessionModal";
 import AddPredecessorModal from "./modals/AddPredecessorModal";
 import ListDirectorsSessionsModal from './modals/ListDirectorsSessionsModal';
-import UpdateMovieModal from './modals/updateMovieModal';
+import UpdateMovieModal from './modals/UpdateMovieModal';
 import ListAudienceModal from './modals/ListAudienceModal';
 
 
