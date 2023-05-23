@@ -54,27 +54,60 @@ public class UserService {
         return jdbcTemplate.queryForList(sql);
     }
 
-    public List getAllRatingsOfAudience(String username) {
+    public List getAllRatingsOfAudience(String username) throws Exception {
 
         System.out.println("getAllRatings:: "+ username);
 
-        String sql = "SELECT M.movie_name, R.movie_id, R.rating FROM  Movies M INNER JOIN Rates R  ON M.movie_id = R.movie_id AND R.username = ?";
+
+        String sql = "SELECT A.username FROM  Audiences A WHERE A.username = ?";
+
+
+        if(jdbcTemplate.queryForList(sql, username).isEmpty()){
+
+            throw new Exception("No user found with username: " + username);
+        }
+
+        sql = "SELECT M.movie_name, R.movie_id, R.rating FROM  Movies M INNER JOIN Rates R  ON M.movie_id = R.movie_id AND R.username = ?";
         return jdbcTemplate.queryForList(sql, username);
+
     }
 
-    public List getDirectorsMovies(String directorUsername) {
+    public List getDirectorsMovies(String directorUsername) throws Exception {
 
         System.out.println("directorUsername: "+ directorUsername);
 
-        String sql = "SELECT S.session_id, M.movie_id, M.movie_name, S.theater_id, T.theater_district , S.time_slot FROM MovieSessions S, Movies M, Theaters T WHERE S.movie_id = M.movie_id AND S.theater_id = T.theater_id AND M.director_username = ?;";
+        String sql = "SELECT D.username FROM  Directors D WHERE D.username = ?";
+
+
+        if(jdbcTemplate.queryForList(sql, directorUsername).isEmpty()){
+
+            throw new Exception("No director found with username: " + directorUsername);
+        }
+
+        sql = "SELECT S.session_id, M.movie_id, M.movie_name, S.theater_id, T.theater_district , S.time_slot FROM MovieSessions S, Movies M, Theaters T WHERE S.movie_id = M.movie_id AND S.theater_id = T.theater_id AND M.director_username = ?;";
         return jdbcTemplate.queryForList(sql, directorUsername);
     }
-    public Map<String, Object> getAverageRatingOfMovie(String movieID) {
+    public Map<String, Object> getAverageRatingOfMovie(String movieID) throws Exception {
 
         System.out.println("movieRating: "+ movieID);
 
-        String sql = "SELECT M.average_rating  FROM  Movies M WHERE M.movie_id = ?";
+        String sql = "SELECT M.movie_id FROM  Movies M WHERE M.movie_id = ?";
+
+
+        if(jdbcTemplate.queryForList(sql, movieID).isEmpty()){
+
+            throw new Exception("No movie found with movieID: " + movieID);
+        }
+
+        sql = "SELECT M.average_rating  FROM  Movies M WHERE M.movie_id = ?";
         return jdbcTemplate.queryForMap(sql, movieID);
+    }
+
+    public int addTheater(AddTheaterRequest addTheaterRequest) {
+
+        String sql = " INSERT INTO Theaters(theater_id, theater_name, theater_capacity, theater_district) VALUES ( ? , ? , ? , ? )";
+        return jdbcTemplate.update(sql,addTheaterRequest.getTheater_id(), addTheaterRequest.getTheater_name(), addTheaterRequest.getTheater_capacity(), addTheaterRequest.getTheater_district());
+
     }
 
 

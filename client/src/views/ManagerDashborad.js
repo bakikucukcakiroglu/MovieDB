@@ -14,6 +14,7 @@ import ListDirectorsModal from "./modals/ListDirectorsModal";
 import ListRatingsModal from "./modals/ListRatingsModal";
 import ListDirectorsMoviesModal from "./modals/ListDirectorsMoviesModal";
 import ListMovieRatingModal from "./modals/ListMovieRatingModal";
+import AddTheaterModal from "./modals/AddTheaterModal";
 
 const ManagerDashboard = () => {
 
@@ -62,6 +63,10 @@ const ManagerDashboard = () => {
     };
 
 
+    const [addTheaterModal, setAddTheaterModal] = useState(false);
+    const handleAddTheaterModalOpen = () => {
+        setAddTheaterModal(true);
+    };
 
 
 
@@ -123,6 +128,14 @@ const ManagerDashboard = () => {
                 handleListMovieRatingModalOpen();
             },
         },
+        {
+            label: "Add Theater*",
+            description: "Add a new theater",
+            func: () => {
+                console.log("Add Theater Clicked!");
+                handleAddTheaterModalOpen();
+            },
+        },
     ];
 
     const handleCloseSnackbar = () => {
@@ -142,6 +155,7 @@ const ManagerDashboard = () => {
             <ListRatingsModal listRatingsModal={listRatingsModal} setListRatingsModal={setListRatingsModal} setAlert={setAlert}></ListRatingsModal>
             <ListDirectorsMoviesModal listDirectorsMoviesModal={listDirectorsMoviesModal} setListDirectorsMoviesModal={setListDirectorsMoviesModal} setAlert={setAlert}></ListDirectorsMoviesModal>
             <ListMovieRatingModal listMovieRatingModal={listMovieRatingModal} setListMovieRatingModal={setListMovieRatingModal} setAlert={setAlert}></ListMovieRatingModal>
+            <AddTheaterModal addTheaterModal={addTheaterModal} setAddTheaterModal={setAddTheaterModal} setAlert={setAlert}></AddTheaterModal>
             {actionsOfManager.map((action , index) =>
                 <Grid key={index} item xs={6} sm={4} md={3}>
                     <Card className="dashboard-card" onClick={action.func}>

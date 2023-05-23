@@ -4,6 +4,7 @@ import com.moviedb.server.payload.*;
 import com.moviedb.server.service.AuthService;
 import com.moviedb.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,97 +27,164 @@ public class UserController {
 
     @PostMapping("/add")
     public ResponseEntity<Object> addUser(@RequestBody AddUserRequest addUserRequest) {
+        try {
+            int user = userService.addUser(addUserRequest);
 
-        int user = userService.addUser(addUserRequest);
-
-        if (user != 0) {
-            // Successful login
             return ResponseEntity.ok(user);
-        } else {
-            // Invalid credentials
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
     @DeleteMapping ("/delete/{username}")
     public ResponseEntity<Object> deleteUser(@PathVariable String username) {
 
-        System.out.println("girdim " + username);
+        try {
+            int user = userService.deleteUser(username);
 
-        int user = userService.deleteUser(username);
+            if(user!=0){
+                return ResponseEntity.ok(user);
 
-        if (user != 0) {
-            // Successful login
-            return ResponseEntity.ok(user);
-        } else {
-            // Invalid credentials
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            }else{
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user found with username: " + username);
+            }
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
     @PutMapping ("/update-platform")
     public ResponseEntity<Object> updateDirector(@RequestBody UpdateDirectorPlatformRequest updateDirectorPlatformRequest) {
 
+        try {
 
-        int user = userService.updateDirector(updateDirectorPlatformRequest);
+            int user = userService.updateDirector(updateDirectorPlatformRequest);
 
-        if (user != 0) {
-            // Successful login
-            return ResponseEntity.ok(user);
-        } else {
-            // Invalid credentials
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            if(user!=0){
+                return ResponseEntity.ok(user);
+
+            }else{
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No director found with username: " + updateDirectorPlatformRequest.getUsername());
+            }
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
     @GetMapping("/directors")
     public ResponseEntity<Object> getAllDirectors() {
 
-        List<Map<String, Object>> directors = userService.getAllDirectors();
+        try{
 
-        if (!directors.isEmpty()) {
+            List<Map<String, Object>> directors = userService.getAllDirectors();
             return ResponseEntity.ok(directors);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No directors found");
+
+        }catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
     @GetMapping("/ratings/{username}")
     public ResponseEntity<Object> getAllRatingsOfAudience(@PathVariable String username) {
 
-        List<Map<String, Object>> ratings = userService.getAllRatingsOfAudience(username);
 
-        if (!ratings.isEmpty()) {
+        try{
+
+            List<Map<String, Object>> ratings = userService.getAllRatingsOfAudience(username);
+
             return ResponseEntity.ok(ratings);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No directors found");
-        }
-    }
 
-    @GetMapping("/average-rating/{movieID}")
-    public ResponseEntity<Object> getAverageRatingOfMovie(@PathVariable String movieID) {
+        }catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
 
-        Map<String, Object> rating = userService.getAverageRatingOfMovie(movieID);
-
-        if (rating != null) {
-            return ResponseEntity.ok(rating);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Average Rating could not be fetched");
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
     @GetMapping("/directors-movies/{directorUsername}")
     public ResponseEntity<Object> getDirectorsMovies(@PathVariable String directorUsername) {
 
-        List<Map<String, Object>> movies = userService.getDirectorsMovies(directorUsername);
+        try{
 
-        if (!movies.isEmpty()) {
+            List<Map<String, Object>> movies = userService.getDirectorsMovies(directorUsername);
+
             return ResponseEntity.ok(movies);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Director's Movies could not be fetched");
+
+        }catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
+    @GetMapping("/average-rating/{movieID}")
+    public ResponseEntity<Object> getAverageRatingOfMovie(@PathVariable String movieID) {
+
+        try{
+
+            Map<String, Object> rating = userService.getAverageRatingOfMovie(movieID);
+
+            return ResponseEntity.ok(rating);
+
+        }catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
+    }
+
+    @PostMapping("/theater/add")
+    public ResponseEntity<Object> addTheater(@RequestBody AddTheaterRequest addTheaterRequest) {
+        try {
+            int user = userService.addTheater(addTheaterRequest);
+
+            return ResponseEntity.ok(user);
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
+    }
 
     @PostMapping("/add-movie")
     public ResponseEntity<Object> addMovie(@RequestBody AddMovieRequest addMovieRequest) {

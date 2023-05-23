@@ -18,7 +18,7 @@ const DeleteAudienceModal = ({deleteAudienceModal, setDeleteAudienceModal,  setA
 
         } catch (error) {
             console.error("Delete user error:", error);
-            setAlert({active: true, alertType: "error", alertMessage: `${deleteAudienceUsername} couldn't be deleted!`})
+            setAlert({active: true, alertType: "error", alertMessage: error.message})
 
         }
 

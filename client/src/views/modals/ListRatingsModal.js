@@ -16,13 +16,11 @@ import {
 import {getRatingsOfAudienceByUsername} from "../../queries/getRatingsOfAudience.query";
 import {useQuery} from "react-query";
 import {getAllDirectors} from "../../queries/getAllDirectors.query";
+import {updateDirectorPlatform} from "../../queries/updateDirector.query";
 
 const ListRatingsModal = ({listRatingsModal, setListRatingsModal, setAlert}) => {
     const [username, setUsername] = useState('');
     const [ratings, setRatings] = useState([]);
-
-
-
 
 
     const handleClose = () => {
@@ -38,17 +36,21 @@ const ListRatingsModal = ({listRatingsModal, setListRatingsModal, setAlert}) => 
         // Replace this with your actual API call implementation
         // For simplicity, here's a mock response
 
-        try{
+        setRatings([]);
 
+        try {
             const data = await getRatingsOfAudienceByUsername(username);
-
             setRatings(data);
+            // Handle successful update
+            setAlert({active: true, alertType: "success", alertMessage: `Ratings of ${username} is fetched successfully!`});
 
-        }catch(error){
-
+        } catch (error) {
             console.error("Fetch ratings error:", error);
 
+            setAlert({active: true, alertType: "error", alertMessage: error.message});
+
         }
+
     };
 
     return (

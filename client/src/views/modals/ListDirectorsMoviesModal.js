@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 
 import {getAllDirectorsMovies} from "../../queries/getAllDirectorsMovies.query";
+import {getRatingsOfAudienceByUsername} from "../../queries/getRatingsOfAudience.query";
 
 
 const ListDirectorsMoviesModal = ({listDirectorsMoviesModal, setListDirectorsMoviesModal, setAlert}) => {
@@ -37,17 +38,21 @@ const ListDirectorsMoviesModal = ({listDirectorsMoviesModal, setListDirectorsMov
         // Replace this with your actual API call implementation
         // For simplicity, here's a mock response
         setResponse([]);
-        try{
 
+
+        try {
             const data = await getAllDirectorsMovies(username);
-
             setResponse(data);
+            // Handle successful update
+            setAlert({active: true, alertType: "success", alertMessage: `Movies of ${username} is fetched successfully!`});
 
-        }catch(error){
-
+        } catch (error) {
             console.error("Fetch ratings error:", error);
 
+            setAlert({active: true, alertType: "error", alertMessage: error.message});
+
         }
+
 
     };
 

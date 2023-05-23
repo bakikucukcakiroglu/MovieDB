@@ -6,10 +6,11 @@ export const deleteUser = async (username) => {
         // Add any necessary headers or authentication tokens
     });
 
-    if (!response.ok) {
-        throw new Error('Failed to delete user.');
+    if (response.ok) {
+        return response.json(); // Resolve with the response body if successful
+    } else {
+        const errorData = await response.text(); // Parse the error response body
+        throw new Error(errorData); // Throw an error with the error message
     }
 
-    // Return the response data if needed
-    return response.json();
 };

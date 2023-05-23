@@ -57,13 +57,13 @@ const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
         }
 
         try {
-            const data =  addUser(user);
+            const data =  await addUser(user);
             console.log("User data", data);
             setAlert({active: true, alertType: "success", alertMessage: `${userType} ${username} is saved successfully!`});
 
-        } catch (Error) {
+        } catch (error) {
             console.error("Create user error:", Error);
-            setAlert({active: true, alertType: "error", alertMessage: `${userType} ${username} couldn't be saved!`})
+            setAlert({active: true, alertType: "error", alertMessage: error.message })
         }
 
         // Reset form fields

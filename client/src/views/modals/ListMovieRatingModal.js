@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 import {getAverageRating} from "../../queries/getAverageRating.query";
+import {getAllDirectorsMovies} from "../../queries/getAllDirectorsMovies.query";
 
 
 const ListMovieRatingModal = ({listMovieRatingModal, setListMovieRatingModal, setAlert}) => {
@@ -47,8 +48,7 @@ const ListMovieRatingModal = ({listMovieRatingModal, setListMovieRatingModal, se
         }catch(error){
 
             console.error("Fetch ratings error:", error);
-            setAlert({active: true, alertType: "error", alertMessage: `Rating of ${movie} couldn't be fetched!`});
-
+            setAlert({active: true, alertType: "error", alertMessage: error.message});
 
         }
 

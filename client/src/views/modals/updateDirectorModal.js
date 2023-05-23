@@ -31,7 +31,7 @@ const DirectorUpdateModal = ({directorUpdateModal, setDirectorUpdateModal, setAl
         } catch (error) {
             console.error('Update director platform error:', error);
 
-            setAlert({active: true, alertType: "error", alertMessage: `Platform of ${username} couldn't be updated!`});
+            setAlert({active: true, alertType: "error", alertMessage: error.message});
 
         }
 

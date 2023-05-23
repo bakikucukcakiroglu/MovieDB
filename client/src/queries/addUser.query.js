@@ -10,9 +10,10 @@ export const addUser = async (user) => {
             body: JSON.stringify(user),
         })
 
-            if (response.ok) {
-                return response.json(); // Resolve with the response body if successful
-            } else {
-                throw new Error("Couldn't create user.");
-            }
+        if (response.ok) {
+            return response.json(); // Resolve with the response body if successful
+        } else {
+            const errorData = await response.text(); // Parse the error response body
+            throw new Error(errorData); // Throw an error with the error message
+        }
 };

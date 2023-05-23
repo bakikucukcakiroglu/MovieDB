@@ -1,8 +1,14 @@
 import {API_URL} from "../config";
 
+export const addTheater = async (theater) => {
 
-export const getAllDirectorsMovies = async (directorUsername) => {
-    const response = await fetch(`${API_URL}/api/user/directors-movies/${directorUsername}`); // Replace with your API endpoint for fetching directors
+    const response = await fetch(`${API_URL}/api/user/theater/add`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(theater),
+    })
 
     if (response.ok) {
         return response.json(); // Resolve with the response body if successful
@@ -11,4 +17,3 @@ export const getAllDirectorsMovies = async (directorUsername) => {
         throw new Error(errorData); // Throw an error with the error message
     }
 };
-
