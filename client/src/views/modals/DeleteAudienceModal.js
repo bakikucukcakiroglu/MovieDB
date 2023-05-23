@@ -1,6 +1,6 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import React, {useState} from "react";
-import {deleteUser} from "../../queries/deleteUser.query";
+import {deleteUser} from "../../queries/deleteAudience.query";
 
 
 const DeleteAudienceModal = ({deleteAudienceModal, setDeleteAudienceModal,  setAlert}) => {
