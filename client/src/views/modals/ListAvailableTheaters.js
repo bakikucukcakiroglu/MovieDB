@@ -16,7 +16,7 @@ import {
 import {getAvailableTheaters} from "../../queries/getAvailableTheaters.query";
 
 
-const ListAvailableTheatersModal = ({listAvailableTheatersModal, setAvailableTheaters, setAlert}) => {
+const ListAvailableTheatersModal = ({listAvailableTheatersModal, setListAvailableTheatersModal, setAlert}) => {
     const [date, setDate] = useState('');
     const [slot, setSlot] = useState('');
     const [response, setResponse] = useState([]);
@@ -26,7 +26,7 @@ const ListAvailableTheatersModal = ({listAvailableTheatersModal, setAvailableThe
 
 
     const handleClose = () => {
-        setAvailableTheaters(false);
+        setListAvailableTheatersModal(false);
     };
 
     const handleDateChange = (event) => {
