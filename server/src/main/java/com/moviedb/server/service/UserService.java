@@ -121,7 +121,41 @@ public class UserService {
 
     public int addSession(AddSessionRequest addSessionRequest) {
 
-        String sql = " INSERT INTO MovieSessions(session_id, movie_id, theater_id, date_, time_slot) VALUES ( ? , ? , ? , ? ,?)";
+        String sql = " SELECT M.duration FROM Movies M WHERE M.movie_id = ? ";
+        List<Map<String, Object>>  result= jdbcTemplate.queryForList(sql, addSessionRequest.getMovie_id());
+        int durationOfTheAddedFilm = Integer.parseInt(result.get(0).get("duration").toString());
+        int beginTimeOfTheAddedFilm = addSessionRequest.getTime_slot();
+        // No enough slot time on that date
+        if(durationOfTheAddedFilm + addSessionRequest.getTime_slot() > 5)
+            return 0;
+
+        // There is an overlap
+        sql = " SELECT DISTINCT S.movie_id, S.time_slot FROM moviesessions S WHERE S.theater_id = ? and S.date_ = ? ";
+        result = jdbcTemplate.queryForList(sql, addSessionRequest.getTheater_id(), addSessionRequest.getDate_());
+
+        for(int i=0;i < result.size();i++){
+            String movie_id = result.get(i).get("movie_id").toString();
+            int beginTimeOfTheCandidateFilm = Integer.parseInt(result.get(i).get("time_slot").toString());
+
+            sql = " SELECT M.duration FROM Movies M WHERE M.movie_id = ' ? ' ";
+
+            List<Map<String, Object>> response = jdbcTemplate.queryForList(sql, movie_id);
+            
+            int durationOfTheCandidateFilm = Integer.parseInt(result.get(0).get("duration").toString());
+
+            if(beginTimeOfTheAddedFilm >= beginTimeOfTheCandidateFilm + durationOfTheCandidateFilm)
+                continue;
+
+            if(beginTimeOfTheAddedFilm + durationOfTheAddedFilm <= beginTimeOfTheCandidateFilm)
+                continue;
+
+                return 0;
+        }
+        //System.out.println(result);
+
+        //if(addSessionRequest. addSessionRequest.getTime_slot() > 4)
+        sql = " INSERT INTO MovieSessions(session_id, movie_id, theater_id, date_, time_slot) VALUES ( ? , ? , ? , ? ,?)";
+
         return jdbcTemplate.update(sql, addSessionRequest.getSession_id(), addSessionRequest.getMovie_id(), addSessionRequest.getTheater_id(), addSessionRequest.getDate_(), addSessionRequest.getTime_slot());
 
 
