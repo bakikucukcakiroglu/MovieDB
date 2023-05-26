@@ -11,6 +11,7 @@ import AddPredecessorModal from "./modals/AddPredecessorModal";
 import ListDirectorsSessionsModal from './modals/ListDirectorsSessionsModal';
 import UpdateMovieModal from './modals/UpdateMovieModal';
 import ListAudienceModal from './modals/ListAudienceModal';
+import ListAvailableTheatersModal from './modals/ListAvailableTheaters';
 
 
 const DirectorDashboard= () => {
@@ -58,6 +59,12 @@ const DirectorDashboard= () => {
         setGetAllAudienceModal(true);
     };
 
+    const [listAvailableTheatersModal, setListAvailableTheatersModal] = useState(false);
+
+    const handleListAvailableTheatersModal = () => {
+        setListAvailableTheatersModal(true);
+    };
+
 
 
     const actionsOfManager = [
@@ -66,6 +73,7 @@ const DirectorDashboard= () => {
             description: "List all theatres available for a given slot.",
             func: () => {
                 console.log("Add User Clicked!");
+                handleListAvailableTheatersModal();
             },
         },
         {
@@ -128,6 +136,7 @@ const DirectorDashboard= () => {
             <Snackbar open={alert.active} autoHideDuration={3000} onClose={handleCloseSnackbar}>
                 <Alert severity={alert.alertType}>{alert.alertMessage}</Alert>
             </Snackbar>
+            <ListAvailableTheatersModal listAvailableTheatersModal={listAvailableTheatersModal} setListAvailableTheatersModal={setListAvailableTheatersModal} setAlert={setAlert} ></ListAvailableTheatersModal>
             <AddMovieModal addMovieModal={addMovieModal} setAddMovieModal={setAddMovieModal} setAlert={setAlert} ></AddMovieModal>
             <AddSessionModal addMovieSessionModal={addSessionModal} setAddMovieSessionModal={setAddSessionModal} setAlert={setAlert} ></AddSessionModal>
             <AddPredecessorModal addPredecessorModal={addPredecessorModal} setAddPredecessorModal={setAddPredecessorModal} setAlert={setAlert} ></AddPredecessorModal>

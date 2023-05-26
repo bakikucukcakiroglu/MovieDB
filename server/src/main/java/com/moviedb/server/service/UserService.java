@@ -140,7 +140,7 @@ public class UserService {
             sql = " SELECT M.duration FROM Movies M WHERE M.movie_id = ' ? ' ";
 
             List<Map<String, Object>> response = jdbcTemplate.queryForList(sql, movie_id);
-            
+
             int durationOfTheCandidateFilm = Integer.parseInt(result.get(0).get("duration").toString());
 
             if(beginTimeOfTheAddedFilm >= beginTimeOfTheCandidateFilm + durationOfTheCandidateFilm)
@@ -227,6 +227,49 @@ public class UserService {
         }
 
         return result;
+    }
+
+    public List getAvailableTheaters(String date, String slot) {
+
+        System.out.println("date: "+ date);
+
+        System.out.println("slot: "+ slot);
+
+        String theater_sql = "SELECT T.theater_id FROM theaters T";
+
+        List<Map<String, Object>>  availableTheaters = jdbcTemplate.queryForList(theater_sql);
+
+        String session_sql = " SELECT DISTINCT S.movie_id, S.theater_id, S.time_slot FROM moviesessions S WHERE S.date_ = '" + date + "' ";
+        List<Map<String, Object>>  sessions = jdbcTemplate.queryForList(session_sql);
+
+
+        for(int i=0;i<sessions.size();i++){
+            String movie_id = sessions.get(i).get("movie_id").toString(); // Get the movie_id
+            // System.out.println(movie_id);
+            String duration_sql = " SELECT M.duration FROM movies M WHERE M.movie_id = '" + movie_id + "';";
+            List<Map<String, Object>>  duration = jdbcTemplate.queryForList(duration_sql);
+            int film_duration = Integer.parseInt(duration.get(0).get("duration").toString());
+            //System.out.println("duration: " + duration);
+            int beginTime = Integer.parseInt(sessions.get(i).get("time_slot").toString());
+            int slotTime = Integer.parseInt(slot);
+            if(beginTime > slotTime || beginTime + film_duration <= slotTime)
+                continue;
+            else{ //delete the key
+                String unavailableTheater_id = sessions.get(i).get("theater_id").toString();
+                //availableTheaters.get(0).remove(unavailableTheater_id);
+                for(int p=0;p<availableTheaters.size();p++) {
+                    availableTheaters.get(p).values().remove(unavailableTheater_id);
+                }
+                System.out.println("Unavailable Theater_id" + unavailableTheater_id);
+            }
+
+        }
+
+
+        System.out.println(sessions);
+        System.out.println(availableTheaters);
+
+        return availableTheaters;
     }
 
 

@@ -285,5 +285,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/available-theaters/{date}/{slot}")
+    public ResponseEntity<Object> getAvailableTheaters(@PathVariable Map<String, String> pathVariables) {
+
+        List<Map<String, Object>> theaters = userService.getAvailableTheaters(pathVariables.get("date"), pathVariables.get("slot"));
+
+        if (!theaters.isEmpty()) {
+            return ResponseEntity.ok(theaters);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Available Theaters couldn't be fetched");
+        }
+    }
+
 
 }
