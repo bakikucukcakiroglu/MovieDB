@@ -137,11 +137,11 @@ public class UserService {
             String movie_id = result.get(i).get("movie_id").toString();
             int beginTimeOfTheCandidateFilm = Integer.parseInt(result.get(i).get("time_slot").toString());
 
-            sql = " SELECT M.duration FROM Movies M WHERE M.movie_id = ' ? ' ";
+            sql = " SELECT M.duration FROM Movies M WHERE M.movie_id =  ?  ";
 
             List<Map<String, Object>> response = jdbcTemplate.queryForList(sql, movie_id);
 
-            int durationOfTheCandidateFilm = Integer.parseInt(result.get(0).get("duration").toString());
+            int durationOfTheCandidateFilm = Integer.parseInt(response.get(0).get("duration").toString());
 
             if(beginTimeOfTheAddedFilm >= beginTimeOfTheCandidateFilm + durationOfTheCandidateFilm)
                 continue;
