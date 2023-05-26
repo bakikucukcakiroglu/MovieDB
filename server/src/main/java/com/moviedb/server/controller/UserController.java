@@ -298,4 +298,23 @@ public class UserController {
     }
 
 
+    @GetMapping("/tickets/{username}")
+    public ResponseEntity<Object> getAllDirectors(@PathVariable String username) {
+
+        try{
+
+            List<Map<String, Object>> tickets = userService.getAllTickets(username);
+            return ResponseEntity.ok(tickets);
+
+        }catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
+    }
+
+
 }

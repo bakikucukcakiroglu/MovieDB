@@ -5,19 +5,14 @@ import {
     Alert, Snackbar,
 } from '@mui/material';
 import './Home.css';
-import DirectorUpdateModal from "./modals/UpdateDirectorModal";
 import DeleteAudienceModal from "./modals/DeleteAudienceModal";
 import ListSessionsModal from './modals/ListSessionsModal';
+import ListMyTicketsModal from "./modals/ListMyTicketsModal";
 
 
 const AudienceDashboard = () => {
 
     const [alert, setAlert] = useState({active:false, alertType: "error", alertMessage:""})
-
-    const [directorUpdateModal, setDirectorUpdateModal] = useState(false);
-    const handleOpenDirectorUpdateModal = () => {
-        setDirectorUpdateModal(true);
-    };
 
     const [listSessionsModal, setListSessionsModal] = useState(false);
 
@@ -30,6 +25,15 @@ const AudienceDashboard = () => {
     const handleDeleteAudienceModalOpen = () => {
         setDeleteAudienceModal(true);
     };
+
+    const [listMyTicketsModal , setListMyTicketsModal] = useState(false);
+
+    const handleListMyTicketsModalOpen = () => {
+        setListMyTicketsModal(true);
+    };
+
+
+
 
 
 
@@ -51,11 +55,11 @@ const AudienceDashboard = () => {
             },
         },
         {
-            label: "Update Director",
-            description: "Update platform ID of a director",
+            label: "My Tickets",
+            description: "List my tickets.",
             func: () => {
-                console.log("Update Director Clicked!");
-                handleOpenDirectorUpdateModal();
+                console.log("List My Tickets Clicked!");
+                handleListMyTicketsModalOpen();
             },
         },
        
@@ -73,7 +77,7 @@ const AudienceDashboard = () => {
             </Snackbar>
             <ListSessionsModal listSessionsModal={listSessionsModal} setListSessionsModal={setListSessionsModal} setAlert={setAlert}></ListSessionsModal>
             <DeleteAudienceModal deleteAudienceModal={deleteAudienceModal} setDeleteAudienceModal={setDeleteAudienceModal} setAlert={setAlert}></DeleteAudienceModal>
-            <DirectorUpdateModal directorUpdateModal={directorUpdateModal} setDirectorUpdateModal={setDirectorUpdateModal} setAlert={setAlert}></DirectorUpdateModal>
+            <ListMyTicketsModal listMyTicketsModal={listMyTicketsModal} setListMyTicketsModal={setListMyTicketsModal} setAlert={setAlert}> </ListMyTicketsModal>
             {actionsOfManager.map((action , index) =>
                 <Grid key={index} item xs={6} sm={4} md={3}>
                     <Card className="dashboard-card" onClick={action.func}>

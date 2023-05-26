@@ -208,27 +208,6 @@ public class UserService {
         return jdbcTemplate.queryForList(sql, getAudienceRequest.getDirector_username(), getAudienceRequest.getMovie_id(), getAudienceRequest.getMovie_id());
     }
 
-    public List getAllSessions() {
-
-        System.out.println("getAllSessions");
-
-        String sql = "SELECT S.session_id, M.movie_id, M.movie_name, D.surname, D.platform_id, S.theater_id, S.time_slot FROM MovieSessions S, Movies M, Directors D WHERE S.movie_id = M.movie_id AND M.director_username = D.username";
-
-        List<Map<String, Object>>  result = jdbcTemplate.queryForList(sql);
-
-        for (int i = 0 ; i < result.size() ; i++ ){
-
-            sql = "SELECT M.movie_id_predecessor FROM Movieprerequisites M  WHERE M.movie_id_successor = '" + result.get(i).get("movie_id")  +"';" ;
-
-            System.out.println(sql);
-
-            result.get(i).put("predecessors", jdbcTemplate.queryForList(sql) );
-
-        }
-
-        return result;
-    }
-
     public List getAvailableTheaters(String date, String slot) {
 
         System.out.println("date: "+ date);
@@ -270,6 +249,41 @@ public class UserService {
         System.out.println(availableTheaters);
 
         return availableTheaters;
+    }
+
+
+    //// AUDIENCE
+
+    public List getAllSessions() {
+
+        System.out.println("getAllSessions");
+
+        String sql = "SELECT S.session_id, M.movie_id, M.movie_name, D.surname, D.platform_id, S.theater_id, S.time_slot FROM MovieSessions S, Movies M, Directors D WHERE S.movie_id = M.movie_id AND M.director_username = D.username";
+
+        List<Map<String, Object>>  result = jdbcTemplate.queryForList(sql);
+
+        for (int i = 0 ; i < result.size() ; i++ ){
+
+            sql = "SELECT M.movie_id_predecessor FROM Movieprerequisites M  WHERE M.movie_id_successor = '" + result.get(i).get("movie_id")  +"';" ;
+
+            System.out.println(sql);
+
+            result.get(i).put("predecessors", jdbcTemplate.queryForList(sql) );
+
+        }
+
+        return result;
+    }
+
+    public List getAllTickets(String username) {
+
+        System.out.println("getAllTickets " +  username);
+
+        String sql = "SELECT M.movie_id, M.movie_name, S.session_id, (SELECT  R.Rating FROM Rates R WHERE R.username = ? AND R.movie_id = M.movie_id) AS rating , M.average_rating  FROM MovieSessions S, BoughtTickets B, Movies M WHERE S.session_id = B.session_id AND M.movie_id = S.movie_id  AND B.username = ? ";
+
+        List<Map<String, Object>>  result = jdbcTemplate.queryForList(sql, username, username);
+
+        return result;
     }
 
 
