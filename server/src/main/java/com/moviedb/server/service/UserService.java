@@ -4,6 +4,7 @@ import com.moviedb.server.payload.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -284,6 +285,92 @@ public class UserService {
         List<Map<String, Object>>  result = jdbcTemplate.queryForList(sql, username, username);
 
         return result;
+    }
+
+
+    public int buyTicket(BuyTicketRequest buyTicketRequest) {
+        String username = buyTicketRequest.getUsername();
+        String session_id = buyTicketRequest.getSession_id();
+
+        String sessionInfoSql = "SELECT * FROM moviesessions S WHERE S.session_id = ? ";
+        String boughtTicketsSql = "SELECT B.session_id FROM boughttickets B WHERE B.username = ? ";
+        //String boughtTicketForSessionSql = "SELECT COUNT(*) AS count FROM boughttickets B WHERE B.username = ? AND B.session_id = ? ";
+
+        String prerequisiteFilmsSql = "SELECT P.movie_id_predecessor FROM movieprerequisites P WHERE P.movie_id_successor = ? ";
+        String theaterCapacitySql = "SELECT T.theater_capacity FROM theaters T WHERE T.theater_id = ? ";
+        String numOfPeopleBoughtTicketForSameSessionSql = "SELECT COUNT(*) AS count  FROM boughttickets B WHERE B.session_id = ? ";
+
+
+        Map<String, Object>  sessionInfo = jdbcTemplate.queryForMap(sessionInfoSql, session_id);
+        List<Map<String, Object>>  boughtTickets = jdbcTemplate.queryForList(boughtTicketsSql, username);
+        List<Map<String, Object>>  prerequisiteFilms = jdbcTemplate.queryForList(prerequisiteFilmsSql, sessionInfo.get("movie_id"));
+        int  theaterCapacity = Integer.parseInt(jdbcTemplate.queryForMap(theaterCapacitySql, sessionInfo.get("theater_id")).get("theater_capacity").toString());
+        int  numOfPeopleBoughtTicketForSameSession = Integer.parseInt(jdbcTemplate.queryForMap(numOfPeopleBoughtTicketForSameSessionSql, sessionInfo.get("session_id")).get("count").toString());
+        //boolean isAlreadyHasTicketForSession = Integer.parseInt(jdbcTemplate.queryForMap(boughtTicketForSessionSql, username, session_id).get("count").toString() )>0;
+
+        System.out.println("sessionInfo" + sessionInfo);
+        System.out.println("boughtTickets" + boughtTickets);
+        System.out.println("prerequisiteFilms" + prerequisiteFilms);
+        System.out.println("theaterCapacity" + theaterCapacity);
+        System.out.println("numOfPeopleBoughtTicketForSameSession" + numOfPeopleBoughtTicketForSameSession);
+
+        //String session_date = sessionInfo.get("date_").toString();
+
+        if(numOfPeopleBoughtTicketForSameSession >= theaterCapacity)
+            return 0;
+
+        String sql = " INSERT INTO BoughtTickets(username, session_id) VALUES ( ? , ?)";
+        return jdbcTemplate.update(sql, buyTicketRequest.getUsername(), buyTicketRequest.getSession_id());
+
+        /*
+        boolean hasWatchedAllPrerequisites = true;
+
+        for(int i=0;i<prerequisiteFilms.size();i++){
+            String predecessorMovieId = prerequisiteFilms.get(i).get("movie_id_predecessor").toString();
+            boolean hasWatchedThisMovie = false;
+            // Now check if we watched the predecessor Movie
+            for(int j=0;j<boughtTickets.size();j++){
+                String candidateSessionId = boughtTickets.get(j).get("session_id").toString();
+                Map<String, Object>  candidateSessionInfo = jdbcTemplate.queryForMap(sessionInfoSql, candidateSessionId);
+                // Has ticket for the same movie.
+                if(candidateSessionInfo.get("movie_id") == predecessorMovieId){
+                    // Predecessor's date is previous
+                    String candidateSessionDate = candidateSessionInfo.get("date_").toString();
+                    String[] candidateSessionDates = candidateSessionDate.split("-");
+                    String[] sessionDates = session_date.split("-");
+
+                    for(int k=0;k<3;k++){
+                        int candidateTime = Integer.parseInt(candidateSessionDates[k]);
+                        int originalTime = Integer.parseInt(sessionDates[k]);
+                        if(candidateTime > originalTime){
+                            break;
+                        }
+                        if(k == 2){
+                            hasWatchedThisMovie = true;
+                        }
+                    }
+                }
+            }
+
+            if(!hasWatchedThisMovie){
+                hasWatchedAllPrerequisites = false;
+                break;
+            }
+        }
+
+             */
+        /*
+        if(isAlreadyHasTicketForSession) {
+            System.out.println("Already has the key");
+            return 0;
+        }
+
+
+        if(!hasWatchedAllPrerequisites) {
+            System.out.println("You haven't watched all the prerequisites");
+            return 0;
+        }
+         */
     }
 
 

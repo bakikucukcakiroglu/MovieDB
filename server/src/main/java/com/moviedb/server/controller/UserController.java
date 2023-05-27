@@ -316,5 +316,21 @@ public class UserController {
         }
     }
 
+    @PostMapping("/buy-ticket")
+    public ResponseEntity<Object> buyTicket(@RequestBody BuyTicketRequest buyTicketRequest) {
+
+
+
+        int response = userService.buyTicket(buyTicketRequest);
+
+        if (response != 0) {
+            // Successful login
+            return ResponseEntity.ok(response);
+        } else {
+            // Invalid credentials
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid credentials");
+        }
+    }
+
 
 }

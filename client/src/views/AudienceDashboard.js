@@ -8,6 +8,7 @@ import './Home.css';
 import DeleteAudienceModal from "./modals/DeleteAudienceModal";
 import ListSessionsModal from './modals/ListSessionsModal';
 import ListMyTicketsModal from "./modals/ListMyTicketsModal";
+import BuyTicketModal from './modals/BuyTicketModal';
 
 
 const AudienceDashboard = () => {
@@ -32,6 +33,12 @@ const AudienceDashboard = () => {
         setListMyTicketsModal(true);
     };
 
+    const [buyTicketModal , setBuyTicketModal] = useState(false);
+
+    const handleBuyTicketModalOpen = () => {
+        setBuyTicketModal(true);
+    };
+
 
 
 
@@ -47,11 +54,11 @@ const AudienceDashboard = () => {
             },
         },
         {
-            label: "Buy Ticket",
+            label: "Buy Ticket For a Movie Session",
             description: "Buy a movie ticket for a specific session.",
             func: () => {
-                console.log("Delete Audience Clicked!");
-                handleDeleteAudienceModalOpen();
+                console.log("Buy Ticket Clicked!");
+                handleBuyTicketModalOpen();
             },
         },
         {
@@ -76,7 +83,7 @@ const AudienceDashboard = () => {
                 <Alert severity={alert.alertType}>{alert.alertMessage}</Alert>
             </Snackbar>
             <ListSessionsModal listSessionsModal={listSessionsModal} setListSessionsModal={setListSessionsModal} setAlert={setAlert}></ListSessionsModal>
-            <DeleteAudienceModal deleteAudienceModal={deleteAudienceModal} setDeleteAudienceModal={setDeleteAudienceModal} setAlert={setAlert}></DeleteAudienceModal>
+            <BuyTicketModal buyTicketModal={buyTicketModal} setBuyTicketModal={setBuyTicketModal} setAlert={setAlert}></BuyTicketModal>
             <ListMyTicketsModal listMyTicketsModal={listMyTicketsModal} setListMyTicketsModal={setListMyTicketsModal} setAlert={setAlert}> </ListMyTicketsModal>
             {actionsOfManager.map((action , index) =>
                 <Grid key={index} item xs={6} sm={4} md={3}>
