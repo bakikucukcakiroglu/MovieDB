@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class AddSessionRequest {
 
-    String session_id, movie_id, theater_id, date_;
+    String session_id, movie_id, theater_id, date_, director_username;
     int  time_slot;
 
 

@@ -6,9 +6,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 
-import java.util.List;
-import java.util.Map;
-
 @SpringBootApplication
 public class ServerApplication {
     public static void main(String[] args) {
@@ -54,8 +51,9 @@ public class ServerApplication {
                 "CREATE TRIGGER checkSubscriptionBeforeRating BEFORE INSERT ON Rates FOR EACH ROW BEGIN DECLARE subscriptionCount INT; SELECT COUNT(*) INTO subscriptionCount FROM Subscribes WHERE username = NEW.username AND platform_id = (SELECT platform_id FROM Directors WHERE username = (SELECT director_username FROM Movies WHERE movie_id = NEW.movie_id)); IF subscriptionCount = 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Audience member must be subscribed to the platform to rate the movie'; END IF; END",
                 "CREATE TRIGGER checkPredecessorMovies BEFORE INSERT ON BoughtTickets FOR EACH ROW BEGIN DECLARE prerequisiteCount INT; DECLARE sessionDate DATE; SELECT date_ INTO sessionDate FROM MovieSessions WHERE session_id = NEW.session_id; SELECT COUNT(*) INTO prerequisiteCount FROM MoviePrerequisites mp WHERE mp.movie_id_successor = (SELECT movie_id FROM MovieSessions WHERE session_id = NEW.session_id) AND NOT EXISTS (SELECT * FROM BoughtTickets bt JOIN MovieSessions ms ON bt.session_id = ms.session_id WHERE bt.username = NEW.username AND ms.movie_id = mp.movie_id_predecessor AND ms.date_ < sessionDate); IF prerequisiteCount > 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'All prerequisite movies must be watched before buying tickets for this session'; END IF; END",
                 "CREATE TRIGGER checkTicketBeforeRating BEFORE INSERT ON Rates FOR EACH ROW BEGIN DECLARE ticketCount INT; SELECT COUNT(*) INTO ticketCount FROM BoughtTickets WHERE username = NEW.username AND session_id IN (SELECT session_id FROM MovieSessions WHERE movie_id = NEW.movie_id); IF ticketCount = 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Audience member must have a ticket for the movie to rate it'; END IF; END;",
-                "CREATE TRIGGER checkCapacityBeforeBuyingTicket BEFORE INSERT ON BoughtTickets FOR EACH ROW BEGIN DECLARE theaterCapacity INT; DECLARE soldTicketsCount INT; SELECT theater_capacity INTO theaterCapacity FROM Theaters INNER JOIN MovieSessions ON Theaters.theater_id = MovieSessions.theater_id WHERE MovieSessions.session_id = NEW.session_id; SELECT COUNT(*) INTO soldTicketsCount FROM BoughtTickets WHERE session_id = NEW.session_id; IF soldTicketsCount >= theaterCapacity THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The theater is already full. No more tickets can be bought for this session.'; END IF; END"
-
+                "CREATE TRIGGER checkCapacityBeforeBuyingTicket BEFORE INSERT ON BoughtTickets FOR EACH ROW BEGIN DECLARE theaterCapacity INT; DECLARE soldTicketsCount INT; SELECT theater_capacity INTO theaterCapacity FROM Theaters INNER JOIN MovieSessions ON Theaters.theater_id = MovieSessions.theater_id WHERE MovieSessions.session_id = NEW.session_id; SELECT COUNT(*) INTO soldTicketsCount FROM BoughtTickets WHERE session_id = NEW.session_id; IF soldTicketsCount >= theaterCapacity THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The theater is already full. No more tickets can be bought for this session.'; END IF; END",
+                "CREATE TRIGGER checkMovieDuration BEFORE INSERT ON Movies FOR EACH ROW BEGIN IF NEW.duration < 1 OR NEW.duration > 4 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Movie duration must be between 1 and 4'; END IF; END$$;",
+                "CREATE TRIGGER checkRateLimit BEFORE INSERT ON Rates FOR EACH ROW BEGIN IF NEW.rating < 0 OR NEW.rating > 5 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Rating must be between 0 and 5'; END IF; END$$;"
         };
 
 
