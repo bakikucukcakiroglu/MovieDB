@@ -79,7 +79,7 @@ const AudienceDashboard = () => {
 
     return (
         <Grid container spacing={1}>
-            <Snackbar open={alert.active} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+            <Snackbar open={alert.active} autoHideDuration={8000} onClose={handleCloseSnackbar}>
                 <Alert severity={alert.alertType}>{alert.alertMessage}</Alert>
             </Snackbar>
             <ListSessionsModal listSessionsModal={listSessionsModal} setListSessionsModal={setListSessionsModal} setAlert={setAlert}></ListSessionsModal>

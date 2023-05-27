@@ -51,7 +51,7 @@ const BuyTicketModal = ({
       setAlert({
         active: true,
         alertType: "error",
-        alertMessage: `Buy Ticket for session ${session_id} by ${isLoggedIn?.username} couldn't be saved!`
+        alertMessage: error.message
       });
     }
 

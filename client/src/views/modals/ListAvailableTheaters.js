@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 
 import {getAvailableTheaters} from "../../queries/getAvailableTheaters.query";
+import {addPredecessor} from "../../queries/addPredecessor.query";
 
 
 const ListAvailableTheatersModal = ({listAvailableTheatersModal, setListAvailableTheatersModal, setAlert}) => {
@@ -43,19 +44,24 @@ const ListAvailableTheatersModal = ({listAvailableTheatersModal, setListAvailabl
         // For simplicity, here's a mock response
         setResponse([]);
 
-        try{
-
+        try {
             const data = await getAvailableTheaters(date, slot);
-
-            console.log("data", data);
-
             setResponse(data);
 
-        }catch(error){
-
-            console.error("Fetch available theaters error:", error);
-
+            console.log("data", data);
+            setAlert({
+                active: true,
+                alertType: "success",
+                alertMessage: `Fetched all available theater for date: ${date} and slot: ${slot}  successfully!`
+            });
+        } catch (error) {
+            setAlert({
+                active: true,
+                alertType: "error",
+                alertMessage: error.message
+            });
         }
+
 
     };
 

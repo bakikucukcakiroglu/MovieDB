@@ -14,6 +14,7 @@ export const buyTicket = async (buyTicketInfo) => {
     if (response.ok) {
         return response.json(); // Resolve with the response body if successful
     } else {
-        throw new Error("Couldn't buy ticket.");
+        const errorData = await response.text(); // Parse the error response body
+        throw new Error(errorData); // Throw an error with the error message
     }
 };

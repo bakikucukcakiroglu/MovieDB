@@ -52,19 +52,13 @@ const ListAudienceModal = ({ listAudienceModal, setListAudienceModal, setAlert }
         }catch(error){
 
             console.log("Couldn't fetch audience.");
-            setAlert({active: true, alertType: "error", alertMessage: `Audience of ${movieId} couldn't be fetched!`});
+            setAlert({active: true, alertType: "error", alertMessage: error.message});
 
 
         }
 
     }
 
-    useEffect(() => {
-        if(listAudienceModal){
-
-            handleFetchAudience();
-        }
-    }, [listAudienceModal]);
 
     return (
         <div>

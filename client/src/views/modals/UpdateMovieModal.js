@@ -33,7 +33,7 @@ const UpdateMovieModal = ({ updateMovieModal, setUpdateMovieModal, setAlert }) =
       setAlert({ active: true, alertType: 'success', alertMessage: `Movie ${movieId} is updated successfully!` });
     } catch (error) {
       console.error('Update movie error:', error);
-      setAlert({ active: true, alertType: 'error', alertMessage: `Movie ${movieId} couldn't be updated!` });
+      setAlert({ active: true, alertType: 'error', alertMessage: error.message });
     }
 
     // Reset the form and close the modal

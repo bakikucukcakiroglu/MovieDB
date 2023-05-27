@@ -60,7 +60,7 @@ const AddMovieModal = ({ addMovieModal, setAddMovieModal, setAlert }) => {
             setAlert({
                 active: true,
                 alertType: "error",
-                alertMessage: `Movie with ID ${movieId} couldn't be saved!`
+                alertMessage: error.message
             });
         }
 
@@ -125,14 +125,7 @@ const AddMovieModal = ({ addMovieModal, setAddMovieModal, setAlert }) => {
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Average Rating"
-                            value={averageRating}
-                            onChange={handleAverageRatingChange}
-                            fullWidth
-                        />
-                    </Grid>
+
                 </Grid>
             </DialogContent>
             <DialogActions>

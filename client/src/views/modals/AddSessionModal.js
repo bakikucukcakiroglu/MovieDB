@@ -65,7 +65,7 @@ const AddMovieSessionModal = ({
       setAlert({
         active: true,
         alertType: "error",
-        alertMessage: `Movie session with ID ${sessionId} couldn't be saved!`
+        alertMessage: error.message
       });
     }
 

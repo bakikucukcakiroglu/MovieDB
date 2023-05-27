@@ -50,8 +50,14 @@ public class ServerApplication {
                 "CREATE TABLE IF NOT EXISTS MoviePrerequisites (movie_id_predecessor VARCHAR(100), movie_id_successor VARCHAR(100), PRIMARY KEY (movie_id_predecessor, movie_id_successor), FOREIGN KEY (movie_id_predecessor) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (movie_id_successor) REFERENCES Movies(movie_id) ON DELETE CASCADE ON UPDATE CASCADE);",
                 "CREATE TRIGGER insertRating BEFORE INSERT ON Rates FOR EACH ROW BEGIN DECLARE row_count_ INT; SELECT COUNT(*) INTO row_count_ FROM Rates WHERE username = NEW.username AND movie_id = NEW.movie_id; IF row_count_ > 0 THEN SIGNAL SQLSTATE '23555' SET MESSAGE_TEXT = 'A user cannot rate a movie more than once'; END IF; END;",
                 "CREATE TRIGGER updateAverageRating AFTER INSERT ON Rates FOR EACH ROW BEGIN DECLARE total_ratings DECIMAL(4,2); DECLARE total_sum DECIMAL(4,2); SET total_ratings = (SELECT COUNT(*) FROM Rates WHERE movie_id = NEW.movie_id); SET total_sum = (SELECT SUM(rating) FROM Rates WHERE movie_id = NEW.movie_id); UPDATE Movies SET average_rating = total_sum / total_ratings WHERE movie_id = NEW.movie_id; END;",
-                "CREATE TRIGGER InsertDatabaseManager BEFORE INSERT ON DatabaseManagers FOR EACH ROW BEGIN IF ((SELECT COUNT(*) FROM DatabaseManagers) >= 4) THEN SIGNAL SQLSTATE '23555' SET MESSAGE_TEXT = 'No more than 4 database managers are allowed'; END IF; END;"
+                "CREATE TRIGGER InsertDatabaseManager BEFORE INSERT ON DatabaseManagers FOR EACH ROW BEGIN IF ((SELECT COUNT(*) FROM DatabaseManagers) >= 4) THEN SIGNAL SQLSTATE '23555' SET MESSAGE_TEXT = 'No more than 4 database managers are allowed'; END IF; END;",
+                "CREATE TRIGGER checkSubscriptionBeforeRating BEFORE INSERT ON Rates FOR EACH ROW BEGIN DECLARE subscriptionCount INT; SELECT COUNT(*) INTO subscriptionCount FROM Subscribes WHERE username = NEW.username AND platform_id = (SELECT platform_id FROM Directors WHERE username = (SELECT director_username FROM Movies WHERE movie_id = NEW.movie_id)); IF subscriptionCount = 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Audience member must be subscribed to the platform to rate the movie'; END IF; END",
+                "CREATE TRIGGER checkPredecessorMovies BEFORE INSERT ON BoughtTickets FOR EACH ROW BEGIN DECLARE prerequisiteCount INT; DECLARE sessionDate DATE; SELECT date_ INTO sessionDate FROM MovieSessions WHERE session_id = NEW.session_id; SELECT COUNT(*) INTO prerequisiteCount FROM MoviePrerequisites mp WHERE mp.movie_id_successor = (SELECT movie_id FROM MovieSessions WHERE session_id = NEW.session_id) AND NOT EXISTS (SELECT * FROM BoughtTickets bt JOIN MovieSessions ms ON bt.session_id = ms.session_id WHERE bt.username = NEW.username AND ms.movie_id = mp.movie_id_predecessor AND ms.date_ < sessionDate); IF prerequisiteCount > 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'All prerequisite movies must be watched before buying tickets for this session'; END IF; END",
+                "CREATE TRIGGER checkTicketBeforeRating BEFORE INSERT ON Rates FOR EACH ROW BEGIN DECLARE ticketCount INT; SELECT COUNT(*) INTO ticketCount FROM BoughtTickets WHERE username = NEW.username AND session_id IN (SELECT session_id FROM MovieSessions WHERE movie_id = NEW.movie_id); IF ticketCount = 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Audience member must have a ticket for the movie to rate it'; END IF; END;",
+                "CREATE TRIGGER checkCapacityBeforeBuyingTicket BEFORE INSERT ON BoughtTickets FOR EACH ROW BEGIN DECLARE theaterCapacity INT; DECLARE soldTicketsCount INT; SELECT theater_capacity INTO theaterCapacity FROM Theaters INNER JOIN MovieSessions ON Theaters.theater_id = MovieSessions.theater_id WHERE MovieSessions.session_id = NEW.session_id; SELECT COUNT(*) INTO soldTicketsCount FROM BoughtTickets WHERE session_id = NEW.session_id; IF soldTicketsCount >= theaterCapacity THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The theater is already full. No more tickets can be bought for this session.'; END IF; END"
+
         };
+
 
         String[] addData = {
                 "INSERT INTO DatabaseManagers(username, password_) VALUES ('manager1', 'managerpass1');",
@@ -76,6 +82,8 @@ public class ServerApplication {
       //  jdbcTemplate.batchUpdate(createTables);
 
        // jdbcTemplate.batchUpdate(addData);
+
+       // jdbcTemplate.batchUpdate(addTrigger);
 
     }
 }

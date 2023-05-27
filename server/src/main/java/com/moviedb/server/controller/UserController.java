@@ -189,16 +189,19 @@ public class UserController {
     @PostMapping("/add-movie")
     public ResponseEntity<Object> addMovie(@RequestBody AddMovieRequest addMovieRequest) {
 
+        try {
+            int user = userService.addMovie(addMovieRequest);
 
-
-        int user = userService.addMovie(addMovieRequest);
-
-        if (user != 0) {
-            // Successful login
             return ResponseEntity.ok(user);
-        } else {
-            // Invalid credentials
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
@@ -206,16 +209,21 @@ public class UserController {
     public ResponseEntity<Object> addSession(@RequestBody AddSessionRequest addSessionRequest) {
 
 
+        try {
+            int user = userService.addSession(addSessionRequest);
 
-        int user = userService.addSession(addSessionRequest);
-
-        if (user != 0) {
-            // Successful login
             return ResponseEntity.ok(user);
-        } else {
-            // Invalid credentials
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
+
     }
 
     @PostMapping("/add-predecessor")
@@ -223,26 +231,39 @@ public class UserController {
 
 
 
-        int user = userService.addPredecessor(addPredecessorRequest);
+        try {
+            int user = userService.addPredecessor(addPredecessorRequest);
 
-        if (user != 0) {
-            // Successful login
             return ResponseEntity.ok(user);
-        } else {
-            // Invalid credentials
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
+
     }
 
     @GetMapping("/directors-sessions/{directorUsername}")
     public ResponseEntity<Object> getDirectorsSessions(@PathVariable String directorUsername) {
 
-        List<Map<String, Object>> movies = userService.getDirectorsSessions(directorUsername);
+        try{
 
-        if (!movies.isEmpty()) {
+            List<Map<String, Object>> movies = userService.getDirectorsSessions(directorUsername);
+
             return ResponseEntity.ok(movies);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Director's Movies could not be fetched");
+
+        }catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
@@ -250,26 +271,39 @@ public class UserController {
     public ResponseEntity<Object> updateMovie(@RequestBody UpdateMovieRequest updateMovieRequest) {
 
 
-        int user = userService.updateMovie(updateMovieRequest);
+        try{
 
-        if (user != 0) {
-            // Successful login
+            int user = userService.updateMovie(updateMovieRequest);
+
             return ResponseEntity.ok(user);
-        } else {
-            // Invalid credentials
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+
+        }catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
     @PostMapping("/audience")
     public ResponseEntity<Object> getAllAudience(@RequestBody GetAudienceRequest getAudienceRequest) {
 
-        List<Map<String, Object>> audience = userService.getAllAudience(getAudienceRequest);
 
-        if (!audience.isEmpty()) {
+        try{
+
+            List<Map<String, Object>> audience = userService.getAllAudience(getAudienceRequest);
+
             return ResponseEntity.ok(audience);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No audience found");
+
+        }catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 
@@ -288,13 +322,22 @@ public class UserController {
     @GetMapping("/available-theaters/{date}/{slot}")
     public ResponseEntity<Object> getAvailableTheaters(@PathVariable Map<String, String> pathVariables) {
 
-        List<Map<String, Object>> theaters = userService.getAvailableTheaters(pathVariables.get("date"), pathVariables.get("slot"));
 
-        if (!theaters.isEmpty()) {
+        try {
+            List<Map<String, Object>> theaters = userService.getAvailableTheaters(pathVariables.get("date"), pathVariables.get("slot"));
+
             return ResponseEntity.ok(theaters);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Available Theaters couldn't be fetched");
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
+
     }
 
 
@@ -320,15 +363,19 @@ public class UserController {
     public ResponseEntity<Object> buyTicket(@RequestBody BuyTicketRequest buyTicketRequest) {
 
 
+        try {
+            int response = userService.buyTicket(buyTicketRequest);
 
-        int response = userService.buyTicket(buyTicketRequest);
-
-        if (response != 0) {
-            // Successful login
             return ResponseEntity.ok(response);
-        } else {
-            // Invalid credentials
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid credentials");
+
+        } catch (Exception e) {
+            // Handle the DuplicateKeyException
+            String errorMessage = e.getMessage();
+
+            System.out.println(errorMessage);
+            // Extract the relevant error information or customize the error message as needed
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 

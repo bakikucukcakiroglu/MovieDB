@@ -53,7 +53,7 @@ const AddPredecessorModal = ({
       setAlert({
         active: true,
         alertType: "error",
-        alertMessage: `Predecessor relationship between movies ${movieIdPredecessor} and ${movieIdSuccessor} couldn't be saved!`
+        alertMessage: error.message
       });
     }
 

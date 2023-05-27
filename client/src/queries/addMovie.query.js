@@ -14,6 +14,7 @@ export const addMovie = async (movie) => {
     if (response.ok) {
         return response.json(); // Resolve with the response body if successful
     } else {
-        throw new Error("Couldn't create movie2.");
+        const errorData = await response.text(); // Parse the error response body
+        throw new Error(errorData); // Throw an error with the error message
     }
 };

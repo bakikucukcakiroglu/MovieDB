@@ -11,11 +11,11 @@ export const getAllAudience = async (payload) => {
         body: JSON.stringify(payload),
     });
 
-
     if (response.ok) {
         return response.json(); // Resolve with the response body if successful
     } else {
-        throw new Error('Failed to fetch audience');
+        const errorData = await response.text(); // Parse the error response body
+        throw new Error(errorData); // Throw an error with the error message
     }
 };
 
