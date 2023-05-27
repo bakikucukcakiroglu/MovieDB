@@ -187,7 +187,7 @@ public class UserService {
 
         System.out.println("directorUsername: "+ directorUsername);
 
-        String sql = "SELECT S.session_id, M.movie_id, M.movie_name, S.theater_id, T.theater_district , S.time_slot FROM MovieSessions S, Movies M, Theaters T WHERE S.movie_id = M.movie_id AND S.theater_id = T.theater_id AND M.director_username = ?;";
+        String sql = "SELECT S.session_id, M.movie_id, M.movie_name, S.theater_id, T.theater_district , S.time_slot FROM MovieSessions S, Movies M, Theaters T WHERE S.movie_id = M.movie_id AND S.theater_id = T.theater_id AND M.director_username = ? ORDER BY  movie_id ASC ;";
 
         List<Map<String, Object>>  result= jdbcTemplate.queryForList(sql, directorUsername);
 
