@@ -1,6 +1,6 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import React, {useState} from "react";
-import {deleteUser} from "../../queries/deleteUser.query";
+import {deleteUser} from "../../../queries/manager.queries/deleteAudience.query";
 
 
 const DeleteAudienceModal = ({deleteAudienceModal, setDeleteAudienceModal,  setAlert}) => {
@@ -18,7 +18,7 @@ const DeleteAudienceModal = ({deleteAudienceModal, setDeleteAudienceModal,  setA
 
         } catch (error) {
             console.error("Delete user error:", error);
-            setAlert({active: true, alertType: "error", alertMessage: `${deleteAudienceUsername} couldn't be deleted!`})
+            setAlert({active: true, alertType: "error", alertMessage: error.message})
 
         }
 

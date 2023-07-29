@@ -7,7 +7,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
     if (!isLoggedIn) {
         // Redirect to login page
-        return <Navigate to="/login" />;
+        return <Navigate to="/login"/>;
     }
 
     return <Outlet /> ;

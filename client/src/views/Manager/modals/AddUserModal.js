@@ -11,10 +11,8 @@ import {
     TextField
 } from "@mui/material";
 import React, {useState} from "react";
-import {useAddUser} from "../../queries/addUser.query";
-
+import {addUser} from "../../../queries/manager.queries/addUser.query";
 const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
-
 
     const [userType, setUserType] = useState("audience");
     const [username, setUsername] = useState("");
@@ -23,9 +21,6 @@ const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
     const [surname, setSurname] = useState("");
     const [nationality, setNationality] = useState("");
     const [platformId, setPlatformId] = useState("");
-
-    const addUser = useAddUser();
-
 
     const handleAddUserModalClose = () => {
 
@@ -38,7 +33,7 @@ const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
         setPlatformId("");
     };
 
-    const handleAddUserSubmit  = async (e) => {
+    const handleAddUserSubmit  = async () => {
         // Handle form submission logic here
         console.log("Add User Form Submitted!");
         console.log("User Type:", userType);
@@ -62,13 +57,13 @@ const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
         }
 
         try {
-            const data = await addUser.mutateAsync(user);
+            const data =  await addUser(user);
             console.log("User data", data);
             setAlert({active: true, alertType: "success", alertMessage: `${userType} ${username} is saved successfully!`});
 
         } catch (error) {
-            console.error("Create user error:", error);
-            setAlert({active: true, alertType: "error", alertMessage: `${userType} ${username} couldn't be saved!`})
+            console.error("Create user error:", Error);
+            setAlert({active: true, alertType: "error", alertMessage: error.message })
         }
 
         // Reset form fields
@@ -113,7 +108,6 @@ const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
     };
 
     return(
-
 
     <Dialog open={addUserModal} onClose={handleAddUserModalClose}>
         <DialogTitle>Add User</DialogTitle>
@@ -187,6 +181,5 @@ const AddUserModal = ({addUserModal, setAddUserModal, setAlert}) => {
 
     )
 }
-
 
 export default  AddUserModal;
